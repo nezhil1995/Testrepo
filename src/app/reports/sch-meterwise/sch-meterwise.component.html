@@ -1,0 +1,88 @@
+<div class="body">
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <div *ngIf="load != true">
+
+    <div class="drop">
+
+      <form [formGroup]="form"  class="form">
+
+        <div class="form-control">
+          <label >Select the Group Meter</label>
+          <select formControlName="mtrname" (change)="onTypeChange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option *ngFor="let meter of groupname" [value]="meter">
+              {{ meter }}
+            </option>
+          </select>
+          <div *ngIf="form.get('mtrname')?.invalid && (form.get('mtrname')?.dirty || form.get('mtrname')?.touched)" class="error">
+            <div *ngIf="form.get('mtrname')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Select</label>
+          <select formControlName="type">
+            <option value="">-- Select --</option>
+            <option *ngFor="let meter of dropdownSta" [value]="meter">
+              {{ meter }}
+            </option>
+          </select>
+          <div *ngIf="form.get('type')?.invalid && (form.get('type')?.dirty || form.get('type')?.touched)" class="error">
+            <div *ngIf="form.get('type')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control" *ngIf="this.form.controls['type']?.value==='Custom'">
+          <label for="name">Select</label>
+          <p-calendar 
+            formControlName="daterange" 
+            (onSelect)="onDateRangeSelect()" 
+            dataType="date" 
+            appendTo="body" 
+            dateFormat="dd/mm/yy" 
+            #calendar
+            [maxDate]="maxDate" [readonlyInput]="true" [(ngModel)]="rangeDates"
+            selectionMode="range"
+            placeholder="Select Date Range">
+          </p-calendar>
+        </div>
+        <button class="button ok" [disabled]="form.invalid && !this.Event" (click)="onSubmit()">GET DATA</button>
+      </form>
+
+    </div>
+
+    <app-loader *ngIf="chartLoad == true && this.form.valid" class="divloader"></app-loader>
+
+    <div class="linechart" *ngIf="chartLoad != true && this.form.valid && this.visiblechart">
+
+        <div class="title">
+          <h4>Energy Consumed for {{title}}</h4>
+        </div>
+
+        <!-- <div class="titledis" *ngIf="!visiblechart">
+          <h4>To fill out the form to show the chart</h4>
+        </div> -->
+
+        <apx-chart id="chart"
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [yaxis]="chartOptions.yaxis"
+        [xaxis]="chartOptions.xaxis"
+        [stroke]="chartOptions.stroke"
+        [grid]="chartOptions.grid"
+        [legend]="chartOptions.legend"
+        [tooltip]="chartOptions.tooltip"
+      ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>

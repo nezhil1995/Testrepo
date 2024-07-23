@@ -1,0 +1,123 @@
+<body>
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+<div *ngIf="load != true">
+
+  <div class="table">
+    <div class="tabletop">
+      <div class="add">
+        <button *ngIf="loginType" class="button addBtn" (click)="showDialog()" ><fa-icon [icon]="add" [size]="'lg'"></fa-icon></button>
+      </div>
+      <div class="search">
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt5.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+        </span>
+      </div>
+      <div class="delete">
+        <button *ngIf="loginType" class="button delBtn" role="button" [disabled]="!selected.length" (click)="deleteselectedRows()" ><fa-icon [icon]="del" [size]="'lg'"></fa-icon></button>
+      </div>
+    </div>
+    <p-table #dt5 id="exportgrptable" [value]="GroupData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+      [(selection)]="selected"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[50,100,500,1000]"
+      [loading]="loading"
+      [globalFilterFields]="['aggroupcode', 'aggroupname']"
+      class="custom-table"
+      [scrollable]="true"
+      [scrollHeight]="TableHeight"
+      >
+      <ng-template pTemplate="header">
+        <tr>
+            <th *ngIf="loginType" style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="aggroupcode">GROUP CODE <p-sortIcon field="aggroupcode"></p-sortIcon></th>
+            <th pSortableColumn="aggroupname">GROUP NAME <p-sortIcon field="aggroupname"></p-sortIcon></th>
+            <th *ngIf="loginType">EDIT</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-GroupMan>
+        <tr>
+            <td *ngIf="loginType">
+              <p-tableCheckbox [value]="GroupMan"></p-tableCheckbox>
+            </td>
+            <td>{{GroupMan.aggroupcode}}</td>
+            <td>{{GroupMan.aggroupname}}</td>
+            <td *ngIf="loginType"><button class="edtBtn" role="button" (click)="EditModal(GroupMan)" ><fa-icon [icon]="edit"></fa-icon></button></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-Data>
+      <tr>
+        <td class="footd" colspan="4">No Data Available</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+      <button class="Btn" (click)="exportExcel()">
+        <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+        <div class="text">EXPORT</div>
+      </button>        
+    </ng-template>
+    </p-table>
+  </div>
+
+</div>
+</body>
+
+<p-dialog [(visible)]="DisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Plantname</label>
+          <select formControlName="agplantname">
+            <option value="">-- Select Plant --</option>
+            <option *ngFor="let meter of plants" [value]="meter.name">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('agplantname')?.invalid && (form.get('agplantname')?.dirty || form.get('agplantname')?.touched)" class="error">
+            <div *ngIf="form.get('agplantname')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Group Name</label>
+        <input type="text" formControlName="aggroupname" placeholder="Enter" required>
+        <div *ngIf="form.get('aggroupname')?.invalid && (form.get('aggroupname')?.dirty || form.get('aggroupname')?.touched)" class="error">
+          <div *ngIf="form.get('aggroupname')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Group Code</label>
+        <input type="text" formControlName="aggroupcode" placeholder="Enter" [(ngModel)]="defaultValue" [readOnly]="true" required>
+        <div *ngIf="form.get('aggroupcode')?.invalid && (form.get('aggroupcode')?.dirty || form.get('aggroupcode')?.touched)" class="error">
+          <div *ngIf="form.get('aggroupcode')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+      
+    </form>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="closeModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+</p-dialog>

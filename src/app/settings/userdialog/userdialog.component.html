@@ -1,0 +1,250 @@
+<body>
+
+  <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+<div *ngIf="load != true">
+  <div class="table">
+    <div class="tabletop">
+      <div class="add">
+        <button *ngIf="loginType" class="button addBtn"  (click)="showDialog()"><fa-icon [icon]="add" [size]="'lg'"></fa-icon></button>
+      </div>
+      <div class="search">
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+        </span>
+      </div>
+      <div class="delete">
+        <button *ngIf="loginType" class="button delBtn" role="button" [disabled]="!selected.length" (click)="deleteselectedRows()"><fa-icon [icon]="del" [size]="'lg'"></fa-icon></button>
+      </div>
+    </div>
+
+    <p-table #dt1 id="exporttable" [value]="UserData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+    [(selection)]="selected"
+    [paginator]="true"
+    [rows]="50"
+    [loading]="loading"
+    [rowsPerPageOptions]="[50, 100, 200]"
+    [globalFilterFields]="['udusername', 'udusercode', 'udemail', 'udfirstName', 'udlastName', 'udtype', 'udplantname', 'udaddress1']"
+    class="custom-table"
+    [scrollable]="true"
+    [scrollHeight]="TableHeight"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem" *ngIf="loginType">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="udusername">USERNAME<p-sortIcon field="udusername" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udusercode">USERCODE<p-sortIcon field="udusercode" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udemail">E-MAIL<p-sortIcon field="udemail" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udfirstName">FIRSTNAME<p-sortIcon field="udfirstName" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udlastName">LASTNAME<p-sortIcon field="udlastName" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udtype">TYPE<p-sortIcon field="udtype" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udplantname">PLANT<p-sortIcon field="udplantname" class="sort-icon"></p-sortIcon></th>
+          <th pSortableColumn="udaddress1">LOCATION<p-sortIcon field="udaddress1" class="sort-icon"></p-sortIcon></th>
+          <th *ngIf="loginType">EDIT</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-User>
+          <tr>
+              <td *ngIf="loginType">
+                <p-tableCheckbox [value]="User"></p-tableCheckbox>
+              </td>
+              <td>{{ User.udusername }}</td>
+              <td>{{ User.udusercode }}</td>
+              <td class="custom-table-cell" [ngClass]="{'ellipsis': User.udemail.length >= 15}" [pTooltip]="User.udemail" tooltipPosition="top" [tooltipDisabled]="!(User.udemail.length >= 15)">{{ User.udemail }}</td>
+              <td>{{ User.udfirstName }}</td>
+              <td>{{ User.udlastName }}</td>
+              <td>{{ User.udtype?.name || User.udtype }}</td>
+              <td>{{ User.udplantname?.name || User.udplantname }}</td>
+              <td>{{ User.udaddress1 }}</td>
+              <td *ngIf="loginType"><button  class="edtBtn" role="button" (click)="EditModal(User)" [disabled]="EditAccess(User.udtype)" ><fa-icon [icon]="edit"></fa-icon></button></td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-Data>
+        <tr>
+          <td class="footd" colspan="10">No Data Available</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="paginatorright">
+        <button class="Btn" (click)="exportExcel()">
+          <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+          <div class="text">EXPORT</div>
+        </button>        
+      </ng-template>
+    </p-table>
+  </div>
+
+</div>
+</body>
+
+<p-dialog [(visible)]="DisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="form" class="form">
+
+      <div class="form-control">
+        <label for="name">Username</label>
+        <input type="text" formControlName="udusername" placeholder="Enter" required>
+        <div *ngIf="form.get('udusername')?.invalid && (form.get('udusername')?.dirty || form.get('udusername')?.touched)" class="error">
+          <div *ngIf="form.get('udusername')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Location</label>
+        <input type="text" formControlName="udaddress1" placeholder="Enter" required>
+        <div *ngIf="form.get('udaddress1')?.invalid && (form.get('udaddress1')?.dirty || form.get('udaddress1')?.touched)" class="error">
+          <div *ngIf="form.get('udaddress1')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-control">
+        <label for="name">Language</label>
+          <select formControlName="udlanguage">
+            <option value="">-- Select Language --</option>
+            <option *ngFor="let meter of language" [value]="meter.name">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('udlanguage')?.invalid && (form.get('udlanguage')?.dirty || form.get('udlanguage')?.touched)" class="error">
+            <div *ngIf="form.get('udlanguage')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div> -->
+
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input type="email" formControlName="udemail" placeholder="example@gmail.com" required>
+        <div *ngIf="form.get('udemail')?.invalid && (form.get('udemail')?.dirty || form.get('udemail')?.touched)" class="error">
+          {{ form.get('udemail')?.hasError('required') ? '*Email is required' : 'Email is invalid' }}
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">User Code</label>
+        <input type="text" formControlName="udusercode" placeholder="Enter" [(ngModel)]="this.defaultValue" [readOnly]="true" required>
+        <div *ngIf="form.get('udusercode')?.invalid && (form.get('udusercode')?.dirty || form.get('udusercode')?.touched)" class="error">
+          <div *ngIf="form.get('udusercode')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Password</label>
+        <input type="text" formControlName="udpassword" placeholder="Enter" required>
+        <div *ngIf="form.get('udpassword')?.invalid && (form.get('udpassword')?.dirty || form.get('udpassword')?.touched)" class="error">
+          <div *ngIf="form.get('udpassword')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Plantname</label>
+          <select formControlName="udplantname">
+            <option value="">-- Select Plant --</option>
+            <option *ngFor="let meter of plants" [value]="meter.plantname">
+              {{ meter.plantname }}
+            </option>
+          </select>
+          <div *ngIf="form.get('udplantname')?.invalid && (form.get('udplantname')?.dirty || form.get('udplantname')?.touched)" class="error">
+            <div *ngIf="form.get('udplantname')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">User type</label>
+          <select formControlName="udtype" (change)="onUserTypeChange($any($event.target).value)">
+            <option value="">-- Select Usertype --</option>
+            <option *ngFor="let meter of userType" [value]="meter.name">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('udtype')?.invalid && (form.get('udtype')?.dirty || form.get('udtype')?.touched)" class="error">
+            <div *ngIf="form.get('udtype')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div>
+
+      <div class="form-control" *ngIf="this.form.get('udtype')?.value === 'CLUSTER-ADMIN'">
+        <label for="name">Plantname Auth</label>
+        <p-multiSelect appendTo="body" [options]="plants" formControlName="udplantAuth" optionLabel="plantname" optionValue="plantid" defaultLabel="--Select Plants--"></p-multiSelect>
+        <div *ngIf="form.get('udplantAuth')?.invalid && (form.get('udplantAuth')?.dirty || form.get('udplantAuth')?.touched)" class="error">
+          <div *ngIf="form.get('udplantAuth')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control" *ngIf="this.form.get('udtype')?.value === 'SUPERCLUSTER-ADMIN'">
+        <label for="name">Select Clusters</label>
+        <p-multiSelect appendTo="body" [options]="ClustersData" formControlName="udClusters" optionLabel="udusername" optionValue="udid" defaultLabel="--Select Cluster--"></p-multiSelect>
+        <div *ngIf="form.get('udClusters')?.invalid && (form.get('udClusters')?.dirty || form.get('udClusters')?.touched)" class="error">
+          <div *ngIf="form.get('udClusters')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Firstname</label>
+        <input type="text" formControlName="udfirstName" placeholder="Enter" required>
+        <div *ngIf="form.get('udfirstName')?.invalid && (form.get('udfirstName')?.dirty || form.get('udfirstName')?.touched)" class="error">
+          <div *ngIf="form.get('udfirstName')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Lastname</label>
+        <input type="text" formControlName="udlastName" placeholder="Enter" required>
+        <div *ngIf="form.get('udlastName')?.invalid && (form.get('udlastName')?.dirty || form.get('udlastName')?.touched)" class="error">
+          <div *ngIf="form.get('udlastName')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Confirm Password</label>
+        <input type="password" formControlName="udconfirmpassword" placeholder="Enter" required>
+        <div *ngIf="form.get('udconfirmpassword')?.invalid && (form.get('udconfirmpassword')?.dirty || form.get('udconfirmpassword')?.touched)" class="error">
+          *required
+        </div>
+        <div *ngIf="form.hasError('passwordMismatch') && (form.get('udconfirmpassword')?.dirty || form.get('udconfirmpassword')?.touched)" class="error">
+          Password does not match
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="closeModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+
+</p-dialog>

@@ -1,0 +1,310 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <a [routerLink]='roueterlink' class="logo">
+      <p>R-ENERGY</p> <img src="../../assets/logo.png" width="23px" height="25px">
+    </a>
+
+    <ul class="nav-menu">
+      <div class="nav-item-unit" *ngIf="this.showWetLocName">
+
+        <!-- <div id="timer"><i class="fi fi-br-stopwatch"></i> {{ formatTime() }}</div> -->
+        <!-- <div class="unit">
+          <p-tag [rounded]="true" severity="danger">
+            <i class="fi fi-br-industry-windows" id="navLoc"></i>
+            <p style="font-size: 10.2px" >{{UnitName}}</p>
+          </p-tag>
+        </div> -->
+        <div class="locationcss">
+          <i class="fi fi-br-industry-windows" id="navLoc"></i>
+          <h4>{{UnitName}}</h4>
+        </div>
+        <div class="locationcss">
+          <fa-icon [icon]="loc" [animation]="'beat-fade'" id="navLoc"></fa-icon>
+          <h4>{{location}}</h4>
+        </div>
+
+        <div class="weather_loader" *ngIf="W_load === true">
+          <img src="../../assets/weatherUi/weather.svg" height="42px">
+          <div class="three-body">
+            <div class="three-body__dot"></div>
+            <div class="three-body__dot"></div>
+            <div class="three-body__dot"></div>
+          </div>
+        </div>
+      
+        <div class="weatherdiv" *ngIf="W_load != true && this.weatherData" (click)="showWeatherDia()">
+          <img [src]="weatherCodeImage(this.weather.main)" height="42px" *ngIf="this.weather.main !== 'Mist'">
+          <img [src]="weatherCodeImage(this.weather.main)" height="22px" *ngIf="this.weather.main === 'Mist'" style="margin-right: 0.5rem;">
+          <h5><tm-ng-odometer [number]="this.main.temp" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>°C &nbsp;</h5>
+          <h5 style="margin-top: 1.1rem;" >{{this.weather.main}}</h5>
+        </div>
+
+      </div>
+
+      <li class="nav-item" *ngIf="this.showWetLocName">
+        <a [routerLink]='roueterlink' routerLinkActive="active" class="nav-link" pTooltip="Home" tooltipPosition="bottom" [autoHide]="false">
+          <i class="fi fi-sr-home" id="fi"></i>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="this.showWetLocName">
+        <a class="nav-link" (click)="showeveolop()" pTooltip="Attach Mail" tooltipPosition="bottom">
+          <i class="fi fi-sr-envelope-plus" id="fi"></i>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="this.showWetLocName">
+        <a class="nav-link" (click)="showNotifiModal()" pTooltip="Notification" tooltipPosition="bottom" [autoHide]="false">
+          <i *ngIf="this.BadgeNotify !== '0'" class="fi fi-ss-bell fi-lg" id="fi" pBadge [value]="this.BadgeNotify" severity="danger"></i>
+          <i *ngIf="this.BadgeNotify === '0'" class="fi fi-ss-bell fi-lg" id="fi"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="Clickprint()" pTooltip="Print" tooltipPosition="bottom" [autoHide]="false">
+          <i class="fi fi-sr-print fi-lg" id="fi"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile" (click)="showUserModal()" pTooltip="Profile" tooltipPosition="bottom" [autoHide]="false">
+          <i class="fi fi-sr-circle-user fi-lg" id="fi"></i>
+        </a>
+      </li>
+
+    </ul>
+
+    <ul class="nav-res">
+      <li class="nav-item" *ngIf="this.showWetLocName">
+        <a class="nav-res-link" (click)="ShowSidebar()">
+          <i class="fi fi-br-menu-burger" id="fi"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<app-maskloader *ngIf="maskLoad === true"></app-maskloader>
+
+<p-dialog [(visible)]="DisplayUserModal" [draggable]="false" [closable]="false" [modal]="true" [style]="{ width: 'auto', height: 'auto', fontfamily: 'SharpSans' }">
+  <ng-template pTemplate="header">
+    <button class="edtBtn" (click)="closeCommonModal()"><i class="fi fi-ss-circle-xmark"></i></button>
+  </ng-template>
+  <div class="profile-card">
+    <!-- <div class="photo">
+      <div>
+        <img src="../../assets/192CT106.jpg" height="150px" width="150px" class="profile-image"/>
+      </div>
+      <div class="verify-tick">
+        <img src="../../assets/verify.png" height="43px" width="43px" alt="Verify Tick"/>
+      </div>
+    </div> -->
+
+    <div class="items itm">
+      <div class="details">
+        <h4>Name  &nbsp;: &nbsp;<span>{{this.Name}} </span> <i *ngIf="this.userType==='BASE-ADMIN'" id="admin" class="fi fi-ss-badge-check"></i> <i *ngIf="this.userType==='BASE-USER'" id="user" class="fi fi-ss-badge-check"></i></h4>
+        <h4>Email &nbsp;&nbsp;: &nbsp;<span>{{this.Email}}</span></h4>
+        <h4>Unit  &nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;<span>{{this.Unit}}</span></h4>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <!-- <button class="button close" (click)="logout()" >LOGOUT<fa-icon [icon]="out"></fa-icon></button> -->
+    </div>
+  </ng-template>
+  
+</p-dialog>
+
+<app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+<p-dialog [(visible)]="DisplayMailDialog" [draggable]="false" [closable]="false" [modal]="true" [style]="{ width: '50%', height: 'auto'}">
+  <ng-template pTemplate="header">
+    <button class="edtBtn" (click)="closeEmailModal()"><i class="fi fi-ss-circle-xmark"></i></button>
+  </ng-template>
+  <div>
+    <form [formGroup]="form">
+
+      <div class="form-control">
+        <label for="name">Select Report Type</label>
+          <select formControlName="report_type" (change)="Onvaluechange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option *ngFor="let meter of type" [value]="meter">
+              {{ meter }}
+            </option>
+          </select>
+          <div *ngIf="form.get('report_type')?.invalid && (form.get('report_type')?.dirty || form.get('report_type')?.touched)" class="error">
+            <div *ngIf="form.get('report_type')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div>
+
+    </form>
+
+    <form [formGroup]="form" class="form2">
+
+      <div class="form-control2">
+        <label for="name">Mail To</label>
+        <p-chips formControlName="email"></p-chips>
+        <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)" class="error chips">
+          <div *ngIf="form.get('email')?.errors!required">
+            *required
+          </div>
+        </div>
+        <div *ngIf="form.get('email')?.hasError('emailConcatenationLengthExceeded')" class="error chips">
+          *Maximum length exceeded (255 characters).
+        </div>
+
+        <button class="button ok" [disabled]="this.form.invalid" (click)="OnSubmit()">SEND <fa-icon [icon]="send"></fa-icon></button>
+      </div>
+      
+    </form>
+  </div>
+</p-dialog>
+
+<!-- WEATHER -->
+<p-dialog [(visible)]="visible" position="top-right" [style]="{ width: 'auto', height: 'auto' }" [draggable]="false" [closable]="true">
+  <ng-template pTemplate="header">
+    <div class="weatherdiv" *ngIf="W_load !== true" (click)="showWeatherDia()">
+      <img [src]="weatherCodeImage(this.weather.main)" height="47px" *ngIf="this.weather.main !== 'Mist'">
+      <img [src]="weatherCodeImage(this.weather.main)" height="22px" *ngIf="this.weather.main === 'Mist'">
+      <h5> &nbsp;<tm-ng-odometer [number]="this.main.temp" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>°C | {{farenHeatCon(this.main.temp)}}°F &nbsp;</h5>
+      <h5>{{this.weather.main}}</h5>
+    </div>
+  </ng-template>
+  <div *ngIf="W_load != true && this.weatherData">
+    <div class="weather_details">
+      <div class="details">
+        <h5><fa-icon id="wat" [icon]="hum"></fa-icon>&nbsp;Humidity&nbsp;:&nbsp;{{this.main.humidity}}%</h5>
+        <h5><img src="'../../../../assets/weatherUi/sunrise.png" height="18px">&nbsp;{{this.riseTime}}</h5>
+        <h5><img src="'../../../../assets/weatherUi/sunset.png" height="18px">&nbsp;{{this.setTime}}</h5>
+      </div>
+
+      <div class="details_wind">
+        <h5>WIND</h5>
+        <h5><img src="'../../../../assets/weatherUi/wind.png" height="15px">&nbsp;Speed&nbsp;:&nbsp;{{this.wind.speed}}m/s</h5>
+        <h5><img src="'../../../../assets/weatherUi/angle.png" height="15px">&nbsp;Direction&nbsp;:&nbsp;{{this.wind.deg}}°</h5>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+
+<p-dialog [(visible)]="DisplayNotifiDialog" header="NOTIFICATION HERE" [draggable]="false" [closable]="false" [modal]="true" [style]="{ width: '55vh', height: '70vh', fontfamily: 'SharpSans' }">
+  <ng-template pTemplate="header">
+    <div id="diaheader">
+      <h4>ALERT NOTIFICATION</h4>
+      <button class="edtBtn" (click)="closeCommonModal()"><i class="fi fi-ss-circle-xmark"></i></button>
+    </div>
+  </ng-template>
+  <!-- <h4>NOTIFY HERE</h4> -->
+  <div class="notify">
+    <div class="notifyHeader">
+      <form [formGroup]="NotifyForm">
+        <div class="form-control">
+          <label id="label" for="name">Select Date</label>
+          <input id="input" type="date" formControlName="date" placeholder="Enter" [max]="date" (input)="onDateChange($any($event.target).value)" [(ngModel)]="this.DefaultData" required>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="this.notifyLoad === true && this.NotifyForm.valid" class="divloader">
+      <div class="dot-spinner">
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+      </div>
+    </div>
+    <div class="notificationbox" *ngIf="this.notifyLoad !== true && this.messages && this.NotifyForm.valid">
+      <div *ngIf="this.messages.length == 0" style="color: #da2020;">No Data Available</div>
+      <div *ngIf="this.messages.length != 0" style="width: 100%;">
+        <ng-container *ngFor="let Data of this.messages">
+          <div class="notification">
+            <div class="notititle"><p>{{Data.nf_time}}</p> <i class="fi fi-sr-exclamation" id="alert"></i></div>
+            <div class="notibody"><p>{{Data.nf_excessName}}</p> 
+              <p>{{Data.nf_excessValue}}
+                <span *ngIf="Data.nf_excessName==='KVA'">&nbsp;KVA&nbsp;</span>
+                <span *ngIf="Data.nf_excessName!=='KVA'">&nbsp;cosϕ&nbsp;</span>
+                <fa-icon id="arrow" [icon]="arrow"></fa-icon>
+              </p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div> 
+  </div>
+</p-dialog>
+
+
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <ul class="nav-menu-res">
+    <div class="nav-item-unit-res" *ngIf="this.showWetLocName">
+
+      <!-- <div id="timer"><i class="fi fi-br-stopwatch"></i> {{ formatTime() }}</div> -->
+      <!-- <div class="unit">
+        <p-tag [rounded]="true" severity="danger">
+          <i class="fi fi-br-industry-windows" id="navLoc"></i>
+          <p style="font-size: 10.2px" >{{UnitName}}</p>
+        </p-tag>
+      </div> -->
+      <div class="locationcss">
+        <i class="fi fi-br-industry-windows" id="navLoc"></i>
+        <h4>{{UnitName}}</h4>
+      </div>
+      <div class="locationcss">
+        <fa-icon [icon]="loc" [animation]="'beat-fade'" id="navLoc"></fa-icon>
+        <h4>{{location}}</h4>
+      </div>
+
+      <div class="weather_loader" *ngIf="W_load === true">
+        <img src="../../assets/weatherUi/weather.svg" height="42px">
+        <div class="three-body">
+          <div class="three-body__dot"></div>
+          <div class="three-body__dot"></div>
+          <div class="three-body__dot"></div>
+        </div>
+      </div>
+    
+      <div class="weatherdiv" *ngIf="W_load != true && this.weatherData" (click)="showWeatherDia()">
+        <img [src]="weatherCodeImage(this.weather.main)" height="42px" *ngIf="this.weather.main !== 'Mist'">
+        <img [src]="weatherCodeImage(this.weather.main)" height="22px" *ngIf="this.weather.main === 'Mist'" style="margin-right: 0.5rem;">
+        <h5><tm-ng-odometer [number]="this.main.temp" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>°C &nbsp;</h5>
+        <h5 style="margin-top: 1.1rem;" >{{this.weather.main}}</h5>
+      </div>
+    </div>
+
+    <li class="nav-item-res">
+      <a routerLink="/dashboard/energy-consumption" routerLinkActive="active" class="nav-link" (click)="Hidesidebar()">
+        <i class="fi fi-ss-bolt" id="fi"></i> Energy Dashboard 
+      </a>
+    </li>
+
+    <li class="nav-item-res">
+      <a routerLink="/dashboard/r-carbon" routerLinkActive="active" class="nav-link"  (click)="Hidesidebar()">
+        <i class="fi fi-rr-thought-bubble" id="fi"></i> Carbon Dashboard
+      </a>
+    </li>
+
+  
+    <li class="nav-item-res" *ngIf="this.showWetLocName">
+      <a class="nav-link" (click)="showeveolop()">
+        Mail <i class="fi fi-sr-envelope-plus" id="fi"></i>
+      </a>
+    </li>
+    <li class="nav-item-res" *ngIf="this.showWetLocName">
+      <a class="nav-link" (click)="showNotifiModal()">
+        Notify
+        <i *ngIf="this.BadgeNotify !== '0'" class="fi fi-ss-bell fi-lg" id="fi" pBadge [value]="this.BadgeNotify" severity="danger"></i>
+        <i *ngIf="this.BadgeNotify === '0'" class="fi fi-ss-bell fi-lg" id="fi"></i>
+      </a>
+    </li>
+    <li class="nav-item-res">
+      <a class="nav-link" id="profile" (click)="showUserModal()">
+        Profile <i class="fi fi-sr-circle-user fi-lg" id="fi"></i>
+      </a>
+    </li>
+  </ul>
+</p-sidebar>

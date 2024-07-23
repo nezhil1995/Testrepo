@@ -1,0 +1,91 @@
+<body>
+
+<div class="linechart">
+
+  <div class="form-title">
+    <form [formGroup]="formType" class="form">
+      <div class="form-control">
+        <label>Select</label>
+        <select formControlName="selectedType" [(ngModel)]="DefaultSelect">
+          <option value="">-- Select --</option>
+          <option *ngFor="let select of seleter" [value]="select">
+            {{ select }}
+          </option>
+        </select>
+      </div>
+    </form>
+
+    <form [formGroup]="formDate" *ngIf="this.formType.get('selectedType')?.value === 'Date Basis' && this.formType.valid" id="form">
+      <h4 >SELECT DATE</h4>
+      <div class="control">
+        <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectDate" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetdateData($event)"
+          >
+        </p-calendar>
+      </div>
+    </form>
+
+    <form [formGroup]="formMonth" *ngIf="this.formType.get('selectedType')?.value === 'Month Basis' && this.formType.valid" id="form">
+      <h4 >SELECT MONTH</h4>
+      <div class="control">
+        <p-calendar appendTo="body" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetMonthData($event)"
+          >
+        </p-calendar>
+      </div>
+    </form>
+
+    <form [formGroup]="formYear" *ngIf="this.formType.get('selectedType')?.value === 'Year Basis' && this.formType.valid" id="form">
+      <h4 >SELECT YEAR</h4>
+      <div class="control">
+        <p-calendar appendTo="body" formControlName="selectYear" view="year" dateFormat="yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="maxDate"
+        (onSelect)="GetYearData($event)"
+        >
+        </p-calendar>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="load === true && this.formType.valid" class="divloader">
+    <div class="dot-spinner">
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+    </div>
+  </div>
+
+  <div class="title" *ngIf="load != true && this.formType.valid">
+    <h4>SANKEY DIAGRAM FOR EMISSION {{this.BasisText}} {{this.FormTypeText}}</h4>
+    <!-- <h4 *ngIf="isCurrentDate(formDate.get('selectDate')?.value) && this.formType.get('selectedType')?.value === 'Date Basis'">LIVE</h4> -->
+  </div>
+ 
+  <div *ngIf="load != true && this.formType.valid" echarts id="chart" [options]="chartoptions"></div>
+
+    <!-- <fusioncharts id="chart" 
+      type="sankey"
+      [dataSource]="dataSource"
+    ></fusioncharts> -->
+  
+  <!-- <div id="sankeychart"></div> -->
+  <!-- <highcharts-chart
+    [Highcharts]="Highcharts"
+    constructorType="chart"
+    [options]="HCchartOptions"
+    id="highchart"
+  ></highcharts-chart> -->
+</div>
+</body>

@@ -1,0 +1,176 @@
+
+<body>
+  <app-loader *ngIf="load == true" class="divloader"> </app-loader>
+
+  <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+<div *ngIf="load != true">
+<div class="table">
+  <div class="tabletop">
+    <div class="add">
+      <button *ngIf="loginType" class="button addBtn" (click)="showDialog()"><fa-icon [icon]="add" [size]="'lg'"></fa-icon></button>
+    </div>
+    <div class="search">
+      <span class="p-input-icon-left ml-auto">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="dt3.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+      </span>
+    </div>
+    <div class="delete">
+      <button *ngIf="loginType" class="button delBtn" role="button" [disabled]="!selected.length" (click)="deleteselectedRows()"><fa-icon [icon]="del" [size]="'lg'"></fa-icon></button>
+    </div>
+  </div>
+  <p-table #dt3 id="exporttable" [value]="plantData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+    [(selection)]="selected"
+    [paginator]="true"
+    [rows]="50"
+    [loading]="loading"
+    [rowsPerPageOptions]="[50, 100]"
+    [globalFilterFields]="['ttplntname', 'ttdaystarttime', 'tts1time', 'tts2time', 'tts3time', 'ttcreatedby', 'ttmodifiedby', 'ttlastupdate']"
+    class="custom-table"
+    [scrollable]="true"
+    [scrollHeight]="TableHeight"
+    >
+    <ng-template pTemplate="header">
+      <tr>
+          <th *ngIf="loginType" style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="ttplntname">PLANT NAME <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="ttdaystarttime">START TIME <p-sortIcon field="ttdaystarttime"></p-sortIcon></th>
+          <th pSortableColumn="tts1time">FIRST SHIFT <p-sortIcon field="tts1time"></p-sortIcon></th>
+          <th pSortableColumn="tts2time">SECOND SHIFT <p-sortIcon field="tts2time"></p-sortIcon></th>
+          <th pSortableColumn="tts3time">THIRD SHIFT <p-sortIcon field="tts3time"></p-sortIcon></th>
+          <th pSortableColumn="ttlastupdate">LAST UPDATE <p-sortIcon field="ttlastupdate"></p-sortIcon></th>
+          <th *ngIf="loginType">EDIT</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-PlantNam>
+      <tr>
+          <td *ngIf="loginType">
+            <p-tableCheckbox [value]="PlantNam"></p-tableCheckbox>
+          </td>
+          <td>{{ PlantNam.ttplntname?.name ||  PlantNam.ttplntname }}</td>
+          <td>{{ PlantNam.ttdaystarttime }}</td>
+          <td>{{ PlantNam.tts1time }}</td>
+          <td>{{ PlantNam.tts2time }}</td>
+          <td>{{ PlantNam.tts3time }}</td>
+          <td>{{ formaterDataSlice(PlantNam.ttlastupdate) }}</td>
+          <td *ngIf="loginType"><button class="edtBtn" role="button" (click)="EditModal(PlantNam)"><fa-icon [icon]="edit"></fa-icon></button></td>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-Data>
+    <tr>
+      <td class="footd" colspan="8">No Data Available</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorright">
+    <button class="Btn" (click)="exportExcel()">
+      <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+      <div class="text">EXPORT</div>
+    </button>        
+  </ng-template>
+  </p-table>
+</div>
+</div>
+</body>
+
+<p-dialog [(visible)]="DisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Start Time</label>
+        <input type="time" formControlName="ttdaystarttime" required>
+        <div *ngIf="form.get('ttdaystarttime')?.invalid && (form.get('ttdaystarttime')?.dirty || form.get('ttdaystarttime')?.touched)" class="error">
+          <div *ngIf="form.get('ttdaystarttime')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">First Shift Time</label>
+        <input type="time" formControlName="tts1time" placeholder="Enter" required>
+        <div *ngIf="form.get('tts1time')?.invalid && (form.get('tts1time')?.dirty || form.get('tts1time')?.touched)" class="error">
+          <div *ngIf="form.get('tts1time')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    <div class="form-control">
+      <label for="name">Second Shift Time</label>
+      <input type="time" formControlName="tts2time" placeholder="Enter" required>
+      <div *ngIf="form.get('tts2time')?.invalid && (form.get('tts2time')?.dirty || form.get('tts2time')?.touched)" class="error">
+        <div *ngIf="form.get('tts2time')?.errors!required">
+          *required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label for="name">Third Shift Time</label>
+      <input type="time" formControlName="tts3time" placeholder="Enter" required>
+      <div *ngIf="form.get('tts3time')?.invalid && (form.get('tts3time')?.dirty || form.get('tts3time')?.touched)" class="error">
+        <div *ngIf="form.get('tts3time')?.errors!required">
+          *required
+        </div>
+      </div>
+    </div>
+
+    </form>
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Plantname</label>
+          <select formControlName="ttplntname">
+            <option value="">-- Select Plant --</option>
+            <option *ngFor="let meter of plants" [value]="meter.plantname">
+              {{ meter.plantname }}
+            </option>
+          </select>
+          <div *ngIf="form.get('ttplntname')?.invalid && (form.get('ttplntname')?.dirty || form.get('ttplntname')?.touched)" class="error">
+            <div *ngIf="form.get('ttplntname')?.errors!required">
+              *required
+            </div>
+          </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Last Update</label>
+        <input type="date" formControlName="ttlastupdate" placeholder="Enter" [readOnly]="true" [(ngModel)]="this.date" required>
+        <div *ngIf="form.get('ttlastupdate')?.invalid && (form.get('ttlastupdate')?.dirty || form.get('ttlastupdate')?.touched)" class="error">
+          <div *ngIf="form.get('ttlastupdate')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Plant Code</label>
+        <input type="text" formControlName="ttcode" placeholder="Enter" [(ngModel)]="defaultValue" [readOnly]="true" required>
+        <div *ngIf="form.get('ttcode')?.invalid && (form.get('ttcode')?.dirty || form.get('ttcode')?.touched)" class="error">
+          <div *ngIf="form.get('ttcode')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+
+    </div>
+
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="closeModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+</p-dialog>

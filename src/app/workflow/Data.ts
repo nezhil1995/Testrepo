@@ -1,0 +1,29 @@
+export interface Workflow{
+  id:number
+  wfeventcode:string
+  wfeventname:string
+  wfplantname:string
+  wfeventgroup:string
+  wfresetinterval:number
+  wfpriority:string
+  wfactive:boolean
+  wfdescription:string
+  wfalertmessage:string
+  wfcorrectmessage:string
+  wfcreatedon:string
+  wfcreatedby:string
+  wfmodifiedon:string
+  wfmodifiedby:string
+  sclassification: []
+  scategory:boolean
+  sgroup:null
+  ssource:null
+  smeters:null
+  atoemail:string
+  accmail:string
+  asubject:string
+  apriority:string
+  amessage:string
+  stime:string
+  schedule_days:string[]
+}

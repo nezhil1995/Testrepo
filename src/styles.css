@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+  letter-spacing: 0.7px;
+  font-family: 'SharpSans', sans-serif;
+ }
+
+@import '~animate.css/animate.min';
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+
+@import "~@flaticon/flaticon-uicons/css/all/all";
+
+:host ::ng-deep element.style{
+  font-family: 'SharpSans', sans-serif;
+  letter-spacing: 0.7px;
+}
+
+@font-face {
+  font-family: 'SharpSans';
+  src: url('./assets/fonts/Alexandria[wght].ttf') format('opentype');
+  font-weight: 350;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Regular.ttf') format('opentype');
+  font-weight: 200;
+}
+
+html, body { height: auto; background-color: #F7F6F9;}
+body { 
+  margin: 0; 
+  font-family: 'SharpSans', sans-serif;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #d15959;
+  border-radius: 20px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content .p-toast-message-text{
+  font-family: 'SharpSans', sans-serif;
+}
+
+:host ::ng-deep *::-webkit-scrollbar {
+  width: 10px;
+}
+
+:host ::ng-deep *::-webkit-scrollbar-thumb {
+  background-color: #d15959;
+  border-radius: 20px;
+}

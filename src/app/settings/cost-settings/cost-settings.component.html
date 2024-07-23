@@ -1,0 +1,133 @@
+<p-tabView [scrollable]="true">
+
+  <!-- EB TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="plug"></fa-icon>
+        <span>ELECTRICITY BOARD</span>
+      </div>
+    </ng-template>
+
+    <app-ebcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-ebcost>
+
+  </p-tabPanel>
+
+  <!-- SOLAR TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="sol"></fa-icon>
+        <span>SOLAR ENERGY</span>
+      </div>
+    </ng-template>
+
+    <app-solarcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-solarcost>
+
+  </p-tabPanel>
+
+  <!-- KVA TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="deman"></fa-icon>
+        <span>M.DEMAND</span>
+      </div>
+    </ng-template>
+
+    <app-kvacost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-kvacost>
+
+  </p-tabPanel>
+
+  <!-- WIND TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="wind"></fa-icon>
+        <span>WIND</span>
+      </div>
+    </ng-template>
+
+    <app-windcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-windcost>
+
+  </p-tabPanel>
+
+  <!-- DG TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="tra"></fa-icon>
+        <span>DIESEL</span>
+      </div>
+    </ng-template>
+
+    <app-dgcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-dgcost>
+
+  </p-tabPanel>
+
+  <!-- PETROL TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="petrol"></fa-icon>
+        <span>PETROL</span>
+      </div>
+    </ng-template>
+
+    <app-petrol [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-petrol>
+
+  </p-tabPanel>
+
+  <!-- LPG TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="lpg"></fa-icon>
+        <span>LPG</span>
+      </div>
+    </ng-template>
+
+    <app-lpgcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-lpgcost>
+
+  </p-tabPanel>
+
+  <!-- CNG TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="gas"></fa-icon>
+        <span>CNG</span>
+      </div>
+    </ng-template>
+
+    <app-cngcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-cngcost>
+
+  </p-tabPanel>
+
+  <!-- PNG TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="png"></fa-icon>
+        <span>PNG</span>
+      </div>
+    </ng-template>
+
+    <app-pngcost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-pngcost>
+
+  </p-tabPanel>
+
+  <!-- WATER TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="wat"></fa-icon>
+        <span>WATER</span>
+      </div>
+    </ng-template>
+
+    <app-watercost [loginType]="this.IsAdmin()" [Curr]="this.CurrencyType"></app-watercost>
+
+  </p-tabPanel>
+
+</p-tabView>

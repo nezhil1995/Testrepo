@@ -1,0 +1,123 @@
+<body>
+
+  <app-loader *ngIf="load == true"></app-loader>
+
+  <div *ngIf="load !== true">
+
+  <p-tabView [scrollable]="true" orientation="left">
+
+    <!-- KVA -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <i class="fi fi-sr-bolt-auto"></i>
+          <span>KVA</span>
+        </div>
+      </ng-template>
+
+      <div class="title" *ngIf="this.kvaload !== true && this.kvaform.valid">
+        <h4>PLANT KVA DATA FOR {{kvainputDate}}</h4>
+      </div>
+
+      <form [formGroup]="kvaform" class="form">
+
+        <div class="control">
+          <label>Select Date</label>
+          <p-calendar appendTo="body" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetMonthKVAData($event)"
+          [(ngModel)]="KvaDefaultDate"
+          [style]="{ width: '195px'}"
+          >
+          </p-calendar>
+        </div>
+
+      </form>
+
+      <app-loader *ngIf="this.kvaload === true" class="divloader"></app-loader>
+
+      <ng-container *ngFor="let chartdata of this.kvadata let i = index">
+      
+        <div class="kvachart" *ngIf="this.kvaload !== true && this.kvaform.valid">
+          
+          <highcharts-chart 
+          [Highcharts]="Highcharts"
+          constructorType="chart"
+          [options]="getChartOptions(i)"
+          id="chart"
+          ></highcharts-chart>
+
+        </div>
+
+      </ng-container>
+      
+    </p-tabPanel>
+
+    <!-- POWER FACTOR -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <i class="fi fi-ss-bulb"></i>
+          <span>POWER FACTOR</span>
+        </div>
+      </ng-template>
+
+      <div class="title" *ngIf="this.pfload !== true && this.pfform.valid">
+        <h4>POWER FACTOR DATA FOR {{pfinputDate}}</h4>
+      </div>
+
+      <form [formGroup]="pfform" class="form">
+
+        <div class="control" >
+          <label>Select Date</label>
+          <p-calendar appendTo="body" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetDatePFData($event)"
+          [(ngModel)]="pfDefaultDate"
+          [style]="{ width: '195px'}"
+          >
+          </p-calendar>
+        </div>
+
+      </form>
+
+      <app-loader *ngIf="this.pfload === true" class="divloader"></app-loader>
+
+      <ng-container *ngFor="let pfchartdata of this.pfdata let i = index">
+
+        <div *ngIf="this.pfload !== true && this.pfform.valid" class="kvachart">
+          <highcharts-chart 
+          [Highcharts]="Highcharts"
+          constructorType="chart"
+          [options]="getPFChartLoop(i)"
+          id="chart"
+          ></highcharts-chart>
+        </div>
+
+      </ng-container>
+
+      
+    </p-tabPanel>
+
+    <!-- SOURCEWISE ENERGY CONSUMPTION -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <i class="fi fi-sr-settings-sliders"></i>
+          <span>SOURCEWISE ENERGY</span>
+        </div>
+      </ng-template>
+
+      <app-sourcedata [plants]="this.plants"></app-sourcedata>
+      
+    </p-tabPanel>
+
+  </p-tabView>
+
+  </div>
+
+</body>

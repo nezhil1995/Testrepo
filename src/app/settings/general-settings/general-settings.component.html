@@ -1,0 +1,54 @@
+<p-tabView [scrollable]="true">
+  <!-- PLANTCONFIG TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="warh"></fa-icon>
+        <span>PLANT CONFIGURATION</span>
+      </div>
+    </ng-template>
+
+    <app-plantdialog [loginType]="this.IsAdmin()"></app-plantdialog>
+
+  </p-tabPanel>
+
+  <!-- SESSION TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="ses"></fa-icon>
+        <span>SESSION CONFIGURATION</span>
+      </div>
+    </ng-template>
+
+    <app-sessiondia [loginType]="this.IsAdmin()"></app-sessiondia>
+
+  </p-tabPanel>
+
+  <!-- GROUP TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="gro"></fa-icon>
+        <span>GROUP MANAGEMENT</span>
+      </div>
+    </ng-template>
+
+    <app-groupdia [loginType]="this.IsAdmin()"></app-groupdia>
+
+  </p-tabPanel>
+
+  <!-- SOURCE TABLE -->
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <fa-icon [icon]="src"></fa-icon>
+        <span>SOURCE MANAGEMENT</span>
+      </div>
+    </ng-template>
+
+    <app-sourcetab [loginType]="this.IsAdmin()"></app-sourcetab>
+
+  </p-tabPanel>
+
+</p-tabView>

@@ -1,0 +1,91 @@
+<div class="body">
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <div *ngIf="load != true">
+
+    <div class="drop">
+
+      <form [formGroup]="form"  class="form">
+
+        <div class="form-control">
+          <label for="name">Select the Comparision Type</label>
+          <select formControlName="cmptype" (change)="onTypeChange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option *ngFor="let com of compwise" [value]="com">
+              {{ com }}
+            </option>
+          </select>
+          <div *ngIf="form.get('cmptype')?.invalid && (form.get('cmptype')?.dirty || form.get('cmptype')?.touched)" class="error">
+            <div *ngIf="form.get('cmptype')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control" *ngIf="this.form.controls['cmptype']?.value==='Custom'">
+          <label for="name">Select Compare Dates 1</label>
+          <p-calendar 
+            formControlName="daterange1" 
+            
+            dataType="date" 
+            appendTo="body" 
+            dateFormat="dd/mm/yy" 
+            #calendar1
+            [maxDate]="maxDate" [readonlyInput]="true" [(ngModel)]="rangeDates1"
+            selectionMode="range"
+            placeholder="Select Date Range">
+          </p-calendar>
+        </div>
+
+        <div class="form-control" *ngIf="this.form.controls['cmptype']?.value==='Custom'">
+          <label for="name">Select Compare Dates 2</label>
+          <p-calendar 
+            formControlName="daterange2"
+            dataType="date" 
+            appendTo="body" 
+            dateFormat="dd/mm/yy" 
+            #calendar2
+            [maxDate]="maxDate" [readonlyInput]="true" [(ngModel)]="rangeDates2"
+            selectionMode="range"
+            placeholder="Select Date Range">
+          </p-calendar>
+        </div>
+        <button *ngIf="this.form.controls['cmptype']?.value==='Custom'" class="button ok" (click)="onDateRangeSelect()">GET DATA</button>
+      </form>
+
+    </div>
+
+    <app-loader *ngIf="chartLoad == true && this.form.valid" class="divloader"></app-loader>
+
+    <div class="linechart" *ngIf="chartLoad != true && this.form.valid && this.chartData">
+
+        <div class="title">
+          <h4>Energy Consumed for {{title}}</h4>
+        </div>
+
+        <div class="titledis" *ngIf="!visiblechart">
+          <h4>To fill out the form to show the chart</h4>
+        </div>
+
+        <apx-chart id="chart"
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [stroke]="chartOptions.stroke"
+          [dataLabels]="chartOptions.dataLabels"
+          [plotOptions]="chartOptions.plotOptions"
+          [yaxis]="chartOptions.yaxis"
+          [labels]="chartOptions.labels"
+          [legend]="chartOptions.legend"
+          [title]="chartOptions.title"
+          [colors]="chartOptions.colors"
+          [subtitle]="chartOptions.subtitle"
+          [grid]="chartOptions.grid"
+          [tooltip]="chartOptions.tooltip"
+        ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>

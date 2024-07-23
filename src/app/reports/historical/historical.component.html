@@ -1,0 +1,134 @@
+<div class="body">
+  <app-loader *ngIf="load == true" class="divloader">
+    <div class="loader"></div>
+  </app-loader>
+
+  <div *ngIf="load != true">
+
+ <div class="drop">
+  <form [formGroup]="form" class="form">
+
+    <div class="form-control control">
+      <label for="name">Select Date Range</label>
+      <p-calendar (onSelect)="onDateRangeSelect()" dataType="date" appendTo="body" placeholder="Select Date Range"  formControlName="dateRange" [(ngModel)]="rangeDates" selectionMode="range" [maxDate]="maxDate" [showButtonBar]="true" [readonlyInput]="true"></p-calendar>
+      <div *ngIf="form.get('dateRange')?.invalid && (form.get('dateRange')?.dirty || form.get('dateRange')?.touched)" class="error">
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label for="name">Select the Meter</label>
+      <select formControlName="hvr_mname" >
+        <option value="">-- Select Meter --</option>
+        <option *ngFor="let meter of meterNameDrop" [value]="meter.metername">
+          {{ meter.metername }}
+        </option>
+      </select>
+      <div *ngIf="form.get('hvr_mname')?.invalid && (form.get('hvr_mname')?.dirty || form.get('hvr_mname')?.touched)" class="error">
+      </div>
+    </div>
+
+    <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">GET DATA</button>
+  </form>
+</div>
+
+  <app-loader *ngIf="chartLoad == true && this.form.valid" class="divloader">
+    <div class="loader"></div>
+  </app-loader>
+
+    <div class="linechart" *ngIf="chartLoad != true && this.form.valid && this.TableData">
+
+        <div class="title">
+          <h4>{{title}}</h4>
+          <button class="button expData" [disabled]="form.invalid" (click)="exportData()"><fa-icon [icon]="meter" [size]="'lg'"></fa-icon>EXPORT DATA</button>
+        </div>
+
+        <p-table  #dt5 [value]="HourlyData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+        [paginator]="true"
+        [rows]="50"
+        [rowsPerPageOptions]="[50,100]"
+        class="custom-table"
+        [scrollable]="true"
+        scrollHeight="500px"
+        >
+        <ng-template pTemplate="header" >
+          <tr>
+              <th class="custom-header" pFrozenColumn> Date </th>
+              <th> 6:00  </th>
+              <th> 7:00  </th>
+              <th> 8:00  </th>
+              <th> 9:00  </th>
+              <th> 10:00  </th>
+              <th> 11:00  </th>
+              <th> 12:00  </th>
+              <th> 13:00  </th>
+              <th> 14:00  </th>
+              <th> 15:00  </th>
+              <th> 16:00  </th>
+              <th> 17:00  </th>
+              <th> 18:00  </th>
+              <th> 19:00  </th>
+              <th> 20:00  </th>
+              <th> 21:00  </th>
+              <th> 22:00  </th>
+              <th> 23:00  </th>
+              <th> 0:00  </th>
+              <th> 1:00  </th>
+              <th> 2:00  </th>
+              <th> 3:00  </th>
+              <th> 4:00  </th>
+              <th> 5:00  </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-Data>
+          <tr>
+              <td pFrozenColumn>{{Data.Date}}</td>
+              <td>{{Data.h1}}</td>
+              <td>{{Data.h2}}</td>
+              <td>{{Data.h3}}</td>
+              <td>{{Data.h4}}</td>
+              <td>{{Data.h5}}</td>
+              <td>{{Data.h6}}</td>
+              <td>{{Data.h7}}</td>
+              <td>{{Data.h8}}</td>
+              <td>{{Data.h9}}</td>
+              <td>{{Data.h10}}</td>
+              <td>{{Data.h11}}</td>
+              <td>{{Data.h12}}</td>
+              <td>{{Data.h13}}</td>
+              <td>{{Data.h14}}</td>
+              <td>{{Data.h15}}</td>
+              <td>{{Data.h16}}</td>
+              <td>{{Data.h17}}</td>
+              <td>{{Data.h18}}</td>
+              <td>{{Data.h19}}</td>
+              <td>{{Data.h20}}</td>
+              <td>{{Data.h21}}</td>
+              <td>{{Data.h22}}</td>
+              <td>{{Data.h23}}</td>
+              <td>{{Data.h24}}</td>
+          </tr>
+      </ng-template>
+    </p-table>
+
+    </div>
+    <div class="chart" *ngIf="chartLoad != true && this.form.valid && this.TableData">
+      <div class="title">
+        <h4>HEATMAP FOR {{title}}</h4>
+      </div>
+
+      <apx-chart id="chart"
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [tooltip]="chartOptions.tooltip"
+    ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>
+

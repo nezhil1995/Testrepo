@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <nav class="navbar">
+    <ng-container *ngFor="let bar of bardata">
+      <a [routerLink]="bar.routerpath" [queryParams]="GetquaryParams(bar.name)" routerLinkActive="active" class="link-item">
+        <fa-icon class="link-icon" [icon]="bar.icon"></fa-icon>
+        <span class="nav-link-name">{{bar.name}}</span>
+      </a>
+    </ng-container>
+  </nav>
+</div>

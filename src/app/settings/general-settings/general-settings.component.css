@@ -1,0 +1,38 @@
+::ng-deep .p-tabview .p-tabview-panels{
+  background-color: #F7F6F9;
+  font-family: 'SharpSans', sans-serif;
+  padding: 0;
+}
+
+::ng-deep .p-tabview{
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-tabview-nav-link {
+  width: max-content;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.tabview{
+  display:flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 0.2rem;
+  margin-top: -0.1rem;
+}
+
+.tabview span{
+  font-size: 12.2px;
+}
+
+.tabview fa-icon{
+  font-size: 15px !important;
+}

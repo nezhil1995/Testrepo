@@ -1,0 +1,164 @@
+<body>
+
+  <app-loader *ngIf="load == true"></app-loader>
+
+  <div *ngIf="load != true" >
+
+    <div class="topbtn">
+      <form [formGroup]="carForm">
+        <p-selectButton [options]="stateOptionsEms" formControlName="value" [(ngModel)]="value" optionLabel="label" optionValue="value">
+          <ng-template let-item>
+            <div class="btnLable">
+              <i [class]="item.icon"></i>
+              <p>{{ item.label }}</p>
+            </div>
+          </ng-template>
+        </p-selectButton>
+      </form>
+    </div>
+
+    <div class="container" *ngIf="this.carForm.get('value')?.value === 'card'">
+      <ng-container *ngFor="let data of supcluData">
+
+        <div class="outer_card">
+
+          <div class="cardbgimg"></div>
+
+          <div class="cluster_details">
+            <img src="../../assets/usr.png" width="40px">
+            <div>{{data.scname}} </div>
+          </div>
+    
+          <div class="content">
+            <ng-container *ngFor="let plant of data.plantnames">
+              <div class="card">
+
+                <div class="card-header">
+                  <h4>{{plant.name}}</h4>
+                  <h4><i class="fi fi-sr-marker"></i> {{plant.location}}</h4>
+                </div>
+
+                <div class="card-body">
+                  <table class="card-table">
+                    <tbody>
+                      <tr>
+                        <td> <i class="fi fi-br-bolt"></i> This Month</td>
+                        <td style="text-align: right;">{{(plant.ThisMonEnergy).toLocaleString()}}</td>
+                        <td>Kwh</td>
+                      </tr>
+                      <tr>
+                        <td><i class="fi fi-bs-indian-rupee-sign"></i> This Month</td>
+                        <td style="text-align: right;">{{(plant.ThisMonCost).toLocaleString()}}</td>
+                        <td>Rs</td>
+                      </tr>
+                      <tr>
+                        <td><i class="fi fi-bs-indian-rupee-sign"></i> Last Month</td>
+                        <td style="text-align: right;">{{(plant.LastMonCost).toLocaleString()}}</td>
+                        <td>Rs</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                <button class="card-button" (click)="getMoreInfo(plant)">MORE INFO</button>
+
+              </div>
+            </ng-container>
+          </div>
+          
+
+        </div>
+
+      </ng-container>
+    </div>
+  </div>
+
+  <ng-container *ngIf="this.carForm.get('value')?.value === 'chart'">
+    <app-chartview></app-chartview>
+  </ng-container>
+  
+
+</body>
+
+<p-dialog [(visible)]="displayModal" [draggable]="false" [closable]="false" [maximizable]="true" [modal]="true" [style]="{width: '80%', height: 'auto'}" (onMaximize)="DiaMaximized($event)">
+
+  <ng-template pTemplate="header">
+    <button class="edtBtn" (click)="closeModal()"><i class="fi fi-ss-circle-xmark"></i></button>
+    <h5 class="text-body" style="font-size: 13px;"><i class="fi fi-sr-marker"></i>{{this.plantLoc}}</h5>
+    <h5 style="font-size: 13px; color: #da2020;"> <i class="fi fi-ss-industry-windows"></i> {{this.plantName}}</h5>
+  </ng-template>
+
+  <form [formGroup]="form" class="form">
+    <h5>SELECT YEAR</h5>
+    <div class="form-control">
+      <p-calendar appendTo="body" [(ngModel)]="date" formControlName="selectYear" view="year" dateFormat="yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="maxDate"
+        (onSelect)="GetYearTableData($event)"
+        >
+      </p-calendar>
+    </div>
+  </form>
+
+  <app-loader class="tabledivloader" *ngIf="this.tableDataload == true"></app-loader>
+
+  <p-table #dt1 [value]="plantCostData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+    [paginator]="false"
+    [rows]="15"
+    [globalFilterFields]="['month']"
+    class="custom-table"
+    [scrollable]="true"
+    [scrollHeight]="this.tableHeight"
+    *ngIf="this.tableDataload != true && this.plantCostData && this.form.valid"
+    >
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="tableHeadrr" colspan="10">ENERGY CONSUMPTION & COST FOR YEAR {{this.selectedYear}}</th>
+      </tr>
+      <tr>
+        <th pSortableColumn="month" rowspan="2">MONTH<p-sortIcon field="month" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="month" rowspan="2">COST<p-sortIcon field="month" class="sort-icon"></p-sortIcon></th>
+        <th colspan="7">CONSUMPTION</th>
+      </tr>
+      <tr>
+        <th pSortableColumn="energyCons">ELECTRICITY (kWh)<p-sortIcon field="energyCons" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">SOLAR (kWh)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">DIESEL (ltr)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">PETROL (ltr)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">LPG (Kg)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">CNG (Kg)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+        <th pSortableColumn="cost">PNG (Kg)<p-sortIcon field="cost" class="sort-icon"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-Data>
+      <tr>
+        <td>{{Data.month}}</td>
+        <td>{{(Data.cost).toLocaleString()}}</td>
+        <td>{{(Data.ElectricityCons).toLocaleString()}}</td>
+        <td>{{(Data.Solar).toLocaleString()}}</td>
+        <td>{{(Data.DGConsumed).toLocaleString()}}</td>
+        <td>{{(Data.PetrolConsumed).toLocaleString()}}</td>
+        <td>{{(Data.LPGConsumed).toLocaleString()}}</td>
+        <td>{{(Data.CNGConsumed).toLocaleString()}}</td>
+        <td>{{(Data.PNGConsumed).toLocaleString()}}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage" let-Data>
+      <tr>
+        <td class="footd" colspan="3">No Data</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+    </div>
+  </ng-template>
+
+</p-dialog>

@@ -1,0 +1,98 @@
+<body>
+
+  <p-tabView [scrollable]="true">
+
+    <!-- METER WISE GRAPH -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="meter"></fa-icon>
+          <span>METER WISE</span>
+        </div>
+      </ng-template>
+
+      <app-meterwise></app-meterwise>
+
+    </p-tabPanel>
+
+    <!-- HISTORICAL METER DATA table -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="his"></fa-icon>
+          <span>HISTORICAL METER DATA</span>
+        </div>
+      </ng-template>
+
+      <app-historical></app-historical>
+
+    </p-tabPanel>
+
+     <!-- HISTORICAL METER DATA HEATMAP -->
+     <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="Het"></fa-icon>
+          <span>METERWISE HEATMAP</span>
+        </div>
+      </ng-template>
+
+      <app-meterheatmap></app-meterheatmap>
+
+    </p-tabPanel>
+
+    <!-- SCHEDULE GROUP -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="sch"></fa-icon>
+          <span>SCHEDULED GROUP WISE</span>
+        </div>
+      </ng-template>
+
+      <app-sch-groupwise></app-sch-groupwise>
+
+    </p-tabPanel>
+
+    <!-- COMPARISION GROUP -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="com"></fa-icon>
+          <span>COMPARISION GROUP WISE</span>
+        </div>
+      </ng-template>
+
+      <app-com-groupwise></app-com-groupwise>
+
+    </p-tabPanel>
+
+    <!-- SCHEDULE METER -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="comM"></fa-icon>
+          <span>SCHEDULED METER WISE</span>
+        </div>
+      </ng-template>
+
+      <app-sch-meterwise></app-sch-meterwise>
+
+    </p-tabPanel>
+
+    <!-- COMPARISION METER -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="not"></fa-icon>
+          <span>COMPARISION METER WISE</span>
+        </div>
+      </ng-template>
+
+      <app-com-meterwise></app-com-meterwise>
+
+    </p-tabPanel>
+
+  </p-tabView>
+
+</body>

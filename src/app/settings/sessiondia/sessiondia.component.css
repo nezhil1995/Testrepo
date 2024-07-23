@@ -1,0 +1,559 @@
+
+.button{
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #ffffff00;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.ok{
+  color: blue;
+  gap: 5px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.close {
+  color: red;
+  gap: 5px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.reset{
+  color: rgb(0, 0, 0);
+  gap: 5px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.addopt{
+  margin-top: 15px;
+  color: rgb(10, 118, 13);
+  gap: 5px;
+  font-size: 13px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.form-control .addopt{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+}
+
+
+.button:hover,
+.button:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+
+.button:active {
+  background-color: #F0F0F1;
+  border-color: rgba(230, 43, 43, 0.388);
+  box-shadow: rgba(243, 3, 3, 0.386) 0 2px 4px;
+  color: rgba(185, 4, 4, 0.65);
+  transform: translateY(0);
+}
+
+.formdiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+	padding: 10px 20px;
+  font-family: 'SharpSans', sans-serif;
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+}
+
+.form-control {
+  display: flex;
+	position: relative;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-control label {
+  display: block;
+  /* margin-top: 1rem; */
+  margin-bottom: 0.5rem;
+  width: 100%;
+  font-weight: bold;
+}
+
+.form-control input {
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px;
+  width: 19.2rem;
+  margin-left: 0;
+  margin-bottom: 0.9rem;
+}
+
+
+.form-control .input{
+  font-size: 14px;
+  padding: 10px;
+  width: 100%;
+  margin-left: -0.2rem;
+  margin-bottom: 0.7rem;
+  margin-top: -0.9rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: -0.9rem;
+  position: relative;
+  text-align: left;
+  left: 1px;
+  font-size: 12px;
+  opacity: 1;
+  transition: opacity 0.3s;
+  animation-name: shake;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+.form-control input:focus {
+	outline: 0;
+	outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #BFDBFE;
+  border-color: #3B82F6;
+  transition: border-color 0.6s;
+}
+
+.form-control input:hover{
+  border-color: #3B82F6;
+  transition: border-color 0.6s;
+}
+
+
+.form-control input.ng-invalid.ng-touched {
+  outline: 1;
+	border-color: red;
+  transition: border-color 0.3s;
+}
+
+::ng-deep .p-menubar{
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-menuitem-icon{
+  font-size: large;
+}
+
+:host ::ng-deep .p-dropdown{
+  font-family: 'SharpSans', sans-serif;
+  display: flex;
+  width: 19.2rem;
+  height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+}
+
+
+::ng-deep .p-dropdown .p-dropdown-label:enabled :focus{
+  outline: 1;
+	border-color: #777;
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-inputtext :enabled :focus{
+  outline: 1;
+	border-color: #777;
+}
+
+::ng-deep .p-dropdown .p-element .p-inputwrapper{
+  outline: 1;
+	border-color: #777;
+}
+
+::ng-deep .p-dropdown-label{
+  font-size: 14px;
+}
+
+:host ::ng-deep .p-dropdown .ng-invalid.ng-touched{
+  outline: 1;
+	border-color: red;
+}
+
+::ng-deep .p-paginator-rpp-options .p-dropdown{
+  width: 1rem;
+}
+
+.foot{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5rem;
+}
+
+
+.button:disabled {
+  /* background-color: #F1F1F1; */
+  background-color: #fafafa;
+  /* border: 0.1px solid #8b8b8b; */
+  cursor: not-allowed;
+
+}
+
+select {
+  border: 2px solid #f0f0f0;
+	border-radius: 4px;
+	font-family: inherit;
+	font-size: 14px;
+	padding: 10px;
+	width: 70%;
+  margin-left: 9rem;
+  margin-top: -2rem;
+}
+
+
+.link{
+  text-decoration: none;
+}
+
+
+/* table div */
+
+::ng-deep .p-datatable-table{
+  font-family: 'SharpSans', sans-serif;
+}
+
+.table{
+  width: 100%;
+}
+
+.custom-table th {
+  background-color: #fff;
+  color: #da2020;
+  /* border: solid 2px #000; */
+  text-align: center;
+  font-size: 14px;
+}
+
+.custom-table td{
+  text-align: center;
+  background-color: #fff;
+  /* color: #fff; */
+  font-size: 14.5px;
+}
+
+.tabletop{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'SharpSans', sans-serif;
+  border: solid 1px #c7c7c7;
+  border-bottom: none;
+  padding: 0.2rem;
+}
+
+::ng-deep .p-inputtext{
+  font-family: 'SharpSans', sans-serif;
+}
+
+.add fa-icon{
+  color: rgb(5, 200, 5);
+}
+
+.delete fa-icon{
+  color: red;
+}
+.edtBtn fa-icon{
+  color: blue;
+  min-height: 2px;
+  width: -5px;
+}
+
+.edtBtn{
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #ffffff00;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  height: 0.5px;
+  padding: calc(0.7rem - 1px) calc(0.7rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 2px;
+}
+
+.edtBtn:hover,
+.edtBtn:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.edtBtn:active {
+  background-color: #F0F0F1;
+  border-color: rgba(43, 52, 230, 0.388);
+  box-shadow: rgba(3, 39, 243, 0.386) 0 2px 4px;
+  color: rgba(185, 4, 4, 0.65);
+  transform: translateY(0);
+}
+
+.button{
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #ffffff00;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.ok{
+  color: blue;
+  gap: 5px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.ok i{
+  color: rgb(0, 0, 240);
+}
+.close {
+  color: red;
+  gap: 5px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.close i{
+  color: red;
+}
+
+.button:hover,
+.button:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.button:active {
+  background-color: #F0F0F1;
+  border-color: rgba(230, 43, 43, 0.388);
+  box-shadow: rgba(243, 3, 3, 0.386) 0 2px 4px;
+  color: rgba(185, 4, 4, 0.65);
+  transform: translateY(0);
+}
+
+.addBtn{
+  color: #00a096;
+}
+
+.delBtn{
+  color: red;
+}
+
+.button:disabled {
+  background-color: #fafafa;
+  border: 1px solid #c1c1c1;
+  cursor: not-allowed;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-content{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-dialog-footer{
+  display: flex;
+  justify-content: space-around;
+}
+
+::ng-deep .p-paginator .p-dropdown{
+  width: 7rem;
+  height: 2.2rem;
+}
+
+::ng-deep .p-button-label{
+  display: flex;
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-dialog.p-confirm-dialog .p-confirm-dialog-icon{
+  color: red;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page{
+  font-family: 'SharpSans', sans-serif;
+  font-weight: 600;
+}
+
+::ng-deep .p-tabview .p-tabview-panels{
+  background-color: #F7F6F9;
+  font-family: 'SharpSans', sans-serif;
+  padding: 0;
+}
+
+::ng-deep .p-tabview{
+  font-family: 'SharpSans', sans-serif;
+}
+
+.tabview{
+  display:flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 0.7rem;
+  margin-top: -0.1rem;
+}
+
+::ng-deep .p-tabview-panel {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* loader */
+.divloader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60vh;
+}
+
+/* export btn */
+
+.Btn {
+  --black: #000000;
+  --ch-black: #141414;
+  --eer-black: #1b1b1b;
+  --night-rider: #2B7A0B;
+  --white: #ffffff;
+  --af-white: #f3f3f3;
+  --ch-white: #e1e1e1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 45px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: var(--night-rider);
+}
+
+/* plus sign */
+.sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.sign .fi {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: var(--af-white);
+}
+/* text */
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: var(--af-white);
+  font-size: 1.1em;
+  font-weight: 600;
+  transition-duration: .3s;
+}
+/* hover effect on button width */
+.Btn:hover {
+  width: 125px;
+  border-radius: 5px;
+  transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+/* hover effect button's text */
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+  padding-left: 2px;
+}
+/* button click effect*/
+.Btn:active {
+  transform: translate(2px ,2px);
+}

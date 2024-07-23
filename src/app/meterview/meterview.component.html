@@ -1,0 +1,96 @@
+<body (window:scroll)="onScroll()">
+
+  <app-loader *ngIf="load == true"></app-loader>
+
+<div *ngIf="load != true">
+<div *ngFor="let name of GroupNamData let i = index">
+
+  <div class="sticky-badge-wrapper" [class.sticky]="stickyGroupIndex === i">
+    <div class="sticky-badge">
+      <p-badge [value]="name" size="large" severity="danger"></p-badge>
+    </div>
+  </div>
+  
+
+  <div class="card-box">
+
+    <ng-container *ngFor="let meterData of MeterViewData">
+
+        <div class="card" *ngIf="meterData.mtgrpname === name">
+
+          <div class="titlebox">
+            <div class="htitle">{{meterData.mtmtrname}}</div>
+            <div class="title">{{meterData.mtpwrfctr | number: '1.2-2'}} cosϕ</div>
+            <div class="title"><p-tag [severity]="meterData.mtmtrstatus==1 ? 'success' : 'danger'" [value]="meterData.mtmtrstatus==1 ? 'ACTIVE' : 'IN-ACTIVE'"></p-tag></div>
+          </div>
+          <p-divider></p-divider>
+          <div class="imgtag" *ngIf="ShowDgGifOn(meterData.mtgrpname, meterData.mtmtrname, meterData.mtpeakcrnt)"><img src="../../assets/generatorON.png" width="30px"></div>
+          <div class="imgtag" *ngIf="ShowDgGifoff(meterData.mtgrpname, meterData.mtmtrname, meterData.mtpeakcrnt)"><img src="../../assets/generatorOFF.png" width="30px"></div>
+          <div class="details">
+
+            <div class="shift">
+              <table class="table">
+                <tr>
+                  <td colspan="2" class="value"><fa-icon class="kwh" [icon]="kwh"></fa-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{meterData.mtenergycons | number: '1.2-2' }}</td>
+                  <td class="unit">kWh</td>
+                </tr>
+                <tr>
+                  <td class="shiftico">Shift 1 :</td>
+                  <td class="value">{{meterData.mts1ec | number: '1.2-2'}}</td>
+                  <td class="unit">kWh</td>
+                </tr>
+                <tr>
+                  <td  class="shiftico">Shift 2 :</td>
+                  <td class="value">{{meterData.mts2ec | number: '1.2-2'}}</td>
+                  <td class="unit">kWh</td>
+                </tr>
+                <tr>
+                  <td  class="shiftico">Shift 3 :</td>
+                  <td class="value">{{meterData.mts3ec | number: '1.2-2'}}</td>
+                  <td class="unit">kWh</td>
+                </tr>
+              </table>
+            </div>
+
+            <div id="line"></div>
+
+            <div class="meter">
+              <table class="table">
+                <tr>
+                  <td class="value"><img src="../../assets/meter/voltmeter.png" width="27px" height="27px"></td>
+                  <td class="value">{{meterData.mtpeakvolt | number: '1.2-2'}}</td>
+                  <td class="unit">V</td>
+                </tr>
+                <tr>
+                  <td class="value"><img src="../../assets/meter/ammeter.png" width="27px" height="27px"></td>
+                  <td class="value">{{meterData.mtpeakcrnt | number: '1.2-2'}}</td>
+                  <td class="unit">A</td>
+                </tr>
+                <tr>
+                  <td class="value"><img src="../../assets/meter/audio-editing.gif" width="27px" height="27px"></td>
+                  <td class="value">{{meterData.mtavgfreq | number: '1.2-2'}}</td>
+                  <td class="unit">Hz</td>
+                </tr>
+                <tr>
+                  <td class="value"><img src="../../assets/meter/speedometer.gif" width="27px" height="27px"></td>
+                  <td class="value">{{meterData.mtacteng | number: '1.2-2'}}</td>
+                  <td class="unit">kWh</td>
+                </tr>
+              </table>
+              <!-- <div class="mtitle"><img src="../../assets/meter/voltmeter.png" width="27px" height="27px">{{meterData.mtpeakvolt | number: '1.2-2' }} V</div>
+              <div class="mtitle"><img src="../../assets/meter/ammeter.png" width="27px" height="27px">{{meterData.mtpeakcrnt | number: '1.2-2'}} A</div>
+              <div class="mtitle"><img src="../../assets/meter/audio-editing.gif" width="27px" height="27px">{{meterData.mtavgfreq | number: '1.2-2'}} Hz</div>
+              <div class="mtitle"><img src="../../assets/meter/speedometer.gif" width="27px" height="27px">{{meterData.mtacteng | number: '1.2-2'}}</div> -->
+            </div>
+
+          </div>
+
+        </div>
+
+  </ng-container>
+  </div>
+  <p-divider></p-divider>
+</div>
+</div>
+
+</body>

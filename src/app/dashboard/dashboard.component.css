@@ -1,0 +1,1006 @@
+body{
+  /* margin-left: 3.6rem;
+  margin-top: 2.5rem; */
+  height: auto;
+  padding: 0.5rem;
+  font-family: 'SharpSans', sans-serif;
+  letter-spacing: 0.7px;
+  padding-bottom: 2rem;
+}
+
+.title #export{
+  float: right;
+}
+
+nav {
+  position: absolute;
+  left: 20%;
+  top: -0.5%;
+  z-index: -1;
+}
+
+::ng-deep .highcharts-credits{
+  display: none;
+}
+
+:host ::ng-deep .p-calendar{
+  font-family: 'SharpSans', sans-serif;
+  width: 12.5rem;
+}
+
+::ng-deep .p-datepicker{
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-datepicker-header{
+  font-family: 'SharpSans', sans-serif;
+}
+
+::ng-deep .p-inputtext{
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 0;
+}
+
+/* button */
+/* inspired form gumroad website */
+.button1 {
+  border: none;
+  outline: none;
+  background-color: #fff;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+  border-radius: 5px;
+  transition: all ease 0.1s;
+  box-shadow: 0px 5px 0px 0px #da2020;
+  cursor: pointer;
+  border: 1px solid #da2020;
+}
+
+.button1:active {
+  transform: translateY(5px);
+  box-shadow: 0px 0px 0px 0px #da2020;
+}
+
+
+.ico-download{
+  color: #fff;
+}
+
+.cards{
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: auto;
+}
+
+
+  select {
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 2px;
+    width: 10rem;
+    height: 2.1rem;
+    transition: border-color 0.6s;
+  }
+
+  #dySelect{
+    width: 12rem;
+  }
+
+  .Dyncontrol{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: -0.5rem;
+  }
+  
+  .Dyncontrol label{
+    font-size: 12.5px;
+  }
+
+  .control{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: -0.5rem;
+  }
+
+  .control label{
+    font-size: 12.5px;
+  }
+
+  select:focus {
+    outline: 0;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #BFDBFE;
+    border-color: #3B82F6;
+    transition: border-color 0.6s;
+  }
+
+  select:hover{
+    border-color: #3B82F6;
+    transition: border-color 0.6s;
+  }
+
+  .unit {
+    font-size: 15px;
+    color: #999;
+    font-weight: 400;
+  }
+
+  .value{
+    margin-top: -1rem;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .val_dis{
+    visibility: hidden;
+  }
+
+
+  .main fa-icon{
+    display: flex;
+    align-items: center;
+  }
+
+  h3{
+    font-size: 18px;
+  }
+
+  .main{
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .main h3{
+    font-size: 15px;
+  }
+
+  .mainfre{
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .mainfre fa-icon{
+    display: flex;
+    align-items: center;
+  }
+
+
+#chart{
+  width: 100%;
+  height: 100%;
+}
+
+#roundchart{
+  width: 100%;
+  height: 100%;
+}
+
+#percentchart{
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep button{
+  font-family: 'SharpSans', sans-serif !important;
+}
+
+.chart1 .title{
+  text-align: center;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  font-size: 15px;
+  width: 100%;
+}
+
+.piechart .title{
+  width: 100%;
+  padding-top: 0.2rem; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-around;
+}
+
+.srctitle{
+  text-align: center;
+  display: flex;
+  text-align: center;
+  justify-content: left;
+  align-items: center;
+  gap: 4rem;
+  font-size: 15px;
+  width: 100%;
+  padding-left: 2rem;
+}
+
+.titleorg{
+  text-align: center;
+  display: flex;
+  text-align: center;
+  justify-content: left;
+  align-items: center;
+  gap: 4rem;
+  font-size: 15px;
+  width: 100%;
+  padding-left: 1rem;
+}
+
+h4{
+  font-size: 14px;
+}
+
+.titlered{
+  display: flex;
+  height: 70%;
+  width: 100%;
+  color: #da2020;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .p-dropdown{
+  font-family: 'SharpSans', sans-serif;
+  display: flex;
+  width: 9.9rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+::ng-deep .p-element .p-dropdown-label {
+  font-family: 'SharpSans', sans-serif;
+  font-size: 14px;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.container2 {
+  position: relative;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.costing-container{
+  margin-top: 1rem;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.container3 {
+  flex:  1 1 calc(65% - 10px);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: left;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.percentage-container {
+  flex:  1 1 calc(35% - 10px);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: left;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  padding-top: 1rem;
+  height: 67vh;
+}
+
+.chart1,
+.chart2 {
+  flex:  1 1 calc(50% - 10px);;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  height: 55vh;
+}
+
+.normalChart{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 55vh;
+}
+
+.new{
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.new::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+.new::-webkit-scrollbar-thumb {
+  background-color: #d15959;
+  border-radius: 20px;
+}
+
+.orgchart{
+  width: 150%;
+  height: 57vh;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.org{
+  width: 100%;
+  height: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+:host ::ng-deep .p-ripple{
+  height: 35px;
+  font-size: 13px;
+}
+
+:host ::ng-deep .p-ripple{
+  height: 35px;
+  font-size: 13px;
+}
+
+::ng-deep .btnLable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.srctable{
+  height:100%;
+  width: 100%;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.srctableloader{
+  height:100%;
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.srctable table, tr, td{
+  text-align: center;
+  font-size: 12.7px;
+  /* border: 1px solid black;
+  border-collapse: collapse; */
+}
+
+
+.tabledivider{
+  height: 0.8px;
+  width: 250%;
+  background-color: #adadad;
+}
+
+.tableimg p{
+  padding-top: -1rem;
+}
+/* sec and cost and energy data */
+
+.SECCosdiv{
+  height: 55vh;
+}
+
+.pfdiv{
+  height: 62vh;
+}
+
+.basetitle{
+  width: 50%;
+  text-align: center;
+}
+
+.piechart,
+.donut {
+  flex:  1 1 calc(30% - 20px);
+  max-width: 32.5%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  height: 58vh;
+}
+
+.grpshift{
+  height: 58vh;
+}
+
+.piechart{
+  gap: 1px;
+  align-content: baseline;
+}
+
+.chr{
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .p-organizationchart{
+  font-family: 'SharpSans', sans-serif;
+  font-weight: bold;
+  font-size: 13.2px;
+}
+
+:host ::ng-deep .p-organizationchart-node-content {
+  background-color: #ECF9FF;
+  width: 9rem;
+}
+
+:host  ::ng-deep .p-organizationchart-node-content:hover {
+  border: 1px solid #C9EEFF;
+  background-color: #C9EEFF;
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+:host ::ng-deep .p-organizationchart .p-organizationchart-node-content{
+  padding: 0.6rem;
+}
+
+/* :host ::ng-deep .ng-tns-c23-9 .p-organizationchart-node-content {
+  height: 8.5rem;
+}
+
+:host ::ng-deep .ng-tns-c23-10 .p-organizationchart-node-content {
+  height: 8.5rem;
+}
+
+:host ::ng-deep .ng-tns-c23-16 .p-organizationchart-node-content {
+  height: 8.5rem;
+} */
+
+.button{
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #ffffff00;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.ok{
+  color: blue;
+  gap: 1rem;
+  font-family: 'SharpSans', sans-serif;
+}
+
+.ok fa-icon{
+  color: rgb(0, 0, 240);
+}
+
+
+.button:hover,
+.button:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+
+.button:active {
+  background-color: #F0F0F1;
+  border-color: rgba(230, 43, 43, 0.388);
+  box-shadow: rgba(243, 3, 3, 0.386) 0 2px 4px;
+  color: rgba(185, 4, 4, 0.65);
+  transform: translateY(0);
+}
+
+.button:disabled {
+  background-color: #fafafa;
+  border: 1px solid #c1c1c1;
+  cursor: not-allowed;
+}
+
+.button1:disabled {
+  background-color: #fafafa;
+  border: 1px solid #c1c1c1;
+  cursor: not-allowed;
+}
+
+.sub{
+  color: #da2020;
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.orgcontainer{
+  width: auto;
+  display: flex;
+  font-size: 11.7px;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  overflow: auto;
+}
+
+.costsummary{
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  gap: 1rem;
+  height: auto;
+  position: relative;
+}
+
+.Coecostsummary{
+  padding-top: 1rem;
+  padding-left: 1rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  gap: 1rem;
+  height: auto;
+  position: relative;
+}
+
+.SECsummary{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  gap: 1rem;
+  height: auto;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.costsummary1{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  gap: 7px;
+  padding-left: 0.5rem;
+}
+
+input.ng-invalid.ng-touched {
+  outline: 1;
+	border-color: red;
+}
+
+form{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+form select.ng-invalid.ng-touched {
+  outline: 1;
+	border-color: red;
+  transition: border-color 0.6s;
+  height: 2rem
+}
+
+:host ::ng-deep .p-calendar{
+  font-family: 'SharpSans', sans-serif;
+  width: 10rem;
+  height: 2rem;
+}
+
+:host ::ng-deep .p-datepicker {
+  background: #ffffff;
+  border: 0 none;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  font-size: 13.5px !important;
+}
+
+:host ::ng-deep .p-multiselect {
+  height: 2.1rem;
+  min-width: 12rem;
+  max-width: 20rem;
+  font-size: 13px;
+}
+
+:host ::ng-deep .p-multiselect-label{
+  display: flex;
+  padding: 0.75rem 0.75rem;
+  justify-content: left;
+  height: 100%;
+  align-items: center;
+}
+
+:host ::ng-deep .p-multiselect-header{
+  display: none;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .container {
+    gap: 10px;
+    /* margin-top: 15rem; */
+  }
+
+  .costing-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart1,
+  .chart2 {
+    height: 60vh;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .chartscr{
+    height: 60vh;
+  }
+
+  .piechart,
+  .donut {
+    height: auto;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .res{
+    height:60vh;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .costing-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    gap: 10px;
+    margin-top: 8rem;
+  }
+  .res{
+    height:60vh;
+  }
+  .main-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); /* Where the magic happens */
+    grid-auto-rows: 94px;
+    gap: 110px 10px;
+  }
+
+  .cards{
+    height: auto;
+  }
+
+  .overviewcard {
+    height: 20vh;
+  }
+
+  .chart1,
+  .chart2{
+    height: 50vh;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .piechart,
+  .donut {
+    height: auto;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
+.Costdivloader, .costdivloaderper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30vh;
+  overflow: hidden;
+}
+
+.costdivloaderper{
+  height: 50vh;
+}
+
+/* cards Designs */
+.cards_container{
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.container5 {
+  flex:  1 1 calc(20% - 20px);;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: auto;
+}
+
+.container7{
+  flex:  1 1 calc(80% - 20px);;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: auto;
+}
+
+.overviewcard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.3rem;
+  border: 2px solid #ccc;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  color: #da2020;
+  background-color: #fff;
+  margin-bottom: 10px;
+  width: calc(20% - 5px);
+  height: 120px;
+  cursor: default;
+}
+
+.blink-red {
+  animation: blink 0.5s infinite alternate;
+  border: 2.5px solid rgb(179, 0, 0); /* Set the border style as needed */
+}
+
+@keyframes blink {
+  from {
+    border-color: rgb(179, 0, 0);
+  }
+  to {
+    border-color: transparent;
+  }
+}
+
+.overEnergyviewcard{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.3rem;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0px 4px 20px rgba(218, 32, 32, 0.3);
+  border-radius: 8px;
+  color: #da2020;
+  margin-bottom: 10px;
+  width: calc(100% - 10px);
+  height: 247px;
+}
+
+#maxA{
+  color: #367E18
+}
+
+#minA{
+  color: #CC561E;
+}
+
+.main{
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.main h3{
+  font-size: 13px;
+}
+
+.main fa-icon{
+  font-size: 12.5px;
+}
+
+.unit {
+  font-size: 12.5px;
+  color: #999;
+  font-weight: 400;
+}
+
+.value{
+  margin-top: -1rem;
+  height: 45%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.value_cos{
+  /* margin-top: -1rem; */
+  height: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.value h4{
+  font-size: 12.7px;
+  color: #000;
+}
+
+.value_cos h4{
+  font-size: 12.7px;
+  color: #000;
+}
+
+.harmonics{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 50px;
+  margin-bottom: 1.2rem;
+}
+
+sub{
+  font-size: 9px !important;
+}
+
+.small{
+  font-family: 'SharpSans', sans-serif;
+  margin-top: 0.1rem;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #000;
+}
+
+
+:host ::ng-deep .odometer.odometer-theme-default{
+  font-family: 'SharpSans', sans-serif;
+  line-height: 1em;
+  letter-spacing: 10px !important;
+}
+
+::ng-deep .odometer.odometer-theme-default .odometer-digit{
+  padding: 0.7px;
+}
+
+
+@media only screen and (min-width: 568px) and (max-width: 868px) {
+  .overviewcard {
+    width: calc(50% - 20px);
+    max-width: 400px;
+  }
+
+  .cards_container{
+    display: block;
+  }
+
+  .container5{
+    flex:  1 1 calc(100% - 20px);;
+    max-width: 100%;
+  }
+}
+
+@media only screen and (max-width: 667px) {
+  
+  .overviewcard {
+    width: calc(100% - 20px);
+    max-width: none;
+    margin-bottom: unset;
+  }
+
+  .cards_container{
+    display: block;
+  }
+
+  .container5{
+    flex:  1 1 calc(100% - 20px);;
+    max-width: 100%;
+  }
+}
+

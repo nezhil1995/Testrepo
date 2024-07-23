@@ -1,0 +1,143 @@
+<div>
+
+  <div class="container">
+
+  
+  <div class="linechart">
+
+    <div class="drop">
+
+      <form [formGroup]="form"  class="form">
+
+        <div class="form-control">
+          <label for="name">Select Range</label>
+          <select formControlName="droprange" (change)="OnvalueChange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option *ngFor="let meter of RangeDrop" [value]="meter.value">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('droprange')?.invalid && (form.get('droprange')?.dirty || form.get('droprange')?.touched)" class="error">
+            <div *ngIf="form.get('droprange')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div *ngIf="load == true && this.form.get('droprange')?.valid" class="divloader">
+      <div class="dot-spinner">
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+    </div>
+    </div>
+
+    <div class="title" *ngIf="load != true && this.form.get('droprange')?.valid">
+      <h4>Emission data for {{this.RangeText(this.form.get('droprange')?.value)}}</h4>
+    </div>
+
+    <apx-chart id="chart" *ngIf="load != true && this.form.get('droprange')?.valid && this.SrcChartData"
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [plotOptions]="chartOptions.plotOptions"
+      [dataLabels]="chartOptions.dataLabels"
+      [yaxis]="chartOptions.yaxis"
+      [labels]="chartOptions.labels"
+      [legend]="chartOptions.legend"
+      [title]="chartOptions.title"
+      [colors]="chartOptions.colors"
+      [subtitle]="chartOptions.subtitle"
+      [theme]="chartOptions.theme"
+    >
+    </apx-chart>
+    
+
+  </div>
+
+  <div class="linechart">
+
+    <div class="drop">
+
+      <form [formGroup]="form2"  class="form">
+
+        <div class="form-control">
+          <label for="name">Select Year</label>
+          <p-calendar appendTo="body" [(ngModel)]="date" formControlName="Year" view="year" dateFormat="yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          placeholder="Select"
+          (onSelect)="GetYearTableData($event)"
+          >
+          </p-calendar>
+  
+        </div>
+
+        <div class="form-control">
+          <label for="name">Select Source Name</label>
+          <select formControlName="Source" (change)="OnSrcChange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option *ngFor="let meter of DropsrcNames" [value]="meter">
+              {{ meter }}
+            </option>
+          </select>
+          <div *ngIf="form2.get('Source')?.invalid && (form2.get('Source')?.dirty || form2.get('Source')?.touched)" class="error">
+            <div *ngIf="form2.get('Source')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div *ngIf="load2 == true && this.form2.valid" class="divloader">
+      <div class="dot-spinner">
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+      </div>
+    </div>
+
+    <div class="title" *ngIf="load2 != true && this.form2.valid">
+      <h4>Emission data for {{this.form2.get('Source')?.value}} {{this.form2.get('Year')?.value}}</h4>
+    </div>
+
+    <apx-chart id="chart" *ngIf="load2 != true && this.form2.valid"
+      [series]="LinechartOptions.series"
+      [chart]="LinechartOptions.chart"
+      [xaxis]="LinechartOptions.xaxis"
+      [stroke]="LinechartOptions.stroke"
+      [plotOptions]="LinechartOptions.plotOptions"
+      [dataLabels]="LinechartOptions.dataLabels"
+      [yaxis]="LinechartOptions.yaxis"
+      [labels]="LinechartOptions.labels"
+      [legend]="LinechartOptions.legend"
+      [title]="LinechartOptions.title"
+      [colors]="LinechartOptions.colors"
+      [subtitle]="LinechartOptions.subtitle"
+      [theme]="LinechartOptions.theme"
+    >
+    </apx-chart>
+
+  </div>
+
+  </div>
+</div>

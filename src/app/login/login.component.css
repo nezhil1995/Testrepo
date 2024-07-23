@@ -1,0 +1,606 @@
+@import url('../../../node_modules/text-security/text-security-square.css');
+
+body {
+  display: flex;
+  flex-wrap: nowrap;
+  letter-spacing: 0.7px;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Dots background */
+/* body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  --dot-bg: rgb(248, 245, 245);
+  --dot-color: rgb(114, 0, 0);
+  --dot-size: 1.1px;
+  --dot-space: 18px;
+  background:
+    linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
+} */
+
+.imgtag{
+  display: flex;
+  width: 50%;
+  height: 90vh;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+#img{
+  mix-blend-mode: multiply;
+  z-index: 1;
+  height: 90%;
+  margin-top: 0.3rem;
+}
+
+#header{
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#header h3{
+  font-size: 1.5rem;
+  color: #da2020;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content .p-toast-message-text{
+  font-family: 'SharpSans', sans-serif;
+}
+
+.image-column {
+  position: relative;
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  /* background-color: #B6E2A1; */
+  background-image: url("../../assets/bg.svg");
+}
+
+
+.form-column{
+  flex: 1;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F0F0F0;
+  overflow: hidden;
+  height: 100%;
+}
+
+#typing{
+  position: relative;
+  width: 100%;
+  z-index: 10;
+  color: #da2020;
+  font-weight: 600;
+  font-size: 24px;
+  height: auto;
+  display: flex;
+  align-items: baseline;
+  padding: 1rem;
+  text-align: left;
+  margin-top: -4rem;
+  padding-left: 2rem;
+}
+
+#typing span{
+  color: #7a7a7a;
+  font-size: 18px;
+}
+
+.blinker-m {
+  animation-name: blinker;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(1,0,0,1);
+  animation-duration: 1s;
+  display: inline-block;
+}
+@keyframes blinker {
+  0% {
+      opacity: 1
+  }
+
+  to {
+      opacity: 0
+  }
+}
+
+.text-container {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.animated-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: fadeInLeft 1s linear forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .image-column {
+    display: none;
+  }
+
+  .form-column {
+    flex: auto;
+  }
+  
+}
+
+@media (max-width: 1000px){
+
+  .imgtag{
+    display: none;
+  }
+
+  #img {
+    display: none;
+  }
+
+  #typing{
+    display: none;
+  }
+}
+
+.head h3{
+  /* color: #13851c; */
+  color: #ffff;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.floating-image {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+}
+
+.head{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+
+header{
+  font-size: 28px;
+  font-weight: 600;
+  /* color: #da2020; */
+  text-align: center;
+}
+
+form{
+  margin-top: 20px;
+  font-family: 'SharpSans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form .field{
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin-top: 35px;
+  border-radius: 6px;
+}
+
+.field input,
+.field button{
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 6px;
+}
+
+
+.field input{
+  font-family: inherit;
+  outline: none;
+  padding: 0 15px;
+  border: 1px solid#CACACA;
+}
+
+
+@font-face {
+  font-family: 'text-security-square';
+  src: url('../../assets/fonts/text-security-disc-compat.ttf') format('truetype');
+}
+
+input[type='password']{
+  font-family: 'text-security-square';
+}
+
+.field input:focus {
+	outline: 1;
+	outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #BFDBFE;
+  border-color: #3B82F6;
+  transition: border-color 0.6s;
+}
+
+.field input:hover{
+  border-color: #3B82F6;
+  transition: border-color 0.6s;
+}
+
+.field input.ng-invalid.ng-touched {
+  outline: 1;
+	border-color: red;
+  transition: border-color 0.3s;
+}
+
+.field input:focus{
+  border-bottom-width: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  background-color: #d301016c;
+}
+
+.eye{
+  position: absolute;
+  top: 50%;
+  right: 47px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #cccccc;
+  cursor: pointer;
+  padding: 5px;
+}
+
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  /* margin-top: -.rem; */
+  position: absolute;
+  text-align: left;
+  left: 12px;
+  font-size: 12px;
+  opacity: 1;
+  transition: opacity 0.3s;
+  animation-name: shake;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  width: 100%;
+  padding-left: 1.5rem;
+  top: 74px;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+@media screen and (max-width: 400px) {
+  .form{
+      padding: 20px 10px;
+  }
+
+}
+
+.forgot-pass{
+  cursor: pointer;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  width: 18rem;
+  font-family: inherit;
+  font-size: 17px;
+  background: #da2020;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+button .svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover .svg {
+  transform: translateX(1.5em) scale(1.1);
+}
+
+button:hover span {
+  transform: translateX(10em);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+:host ::ng-deep .p-toast-summary{
+  text-align: center;
+}
+
+:host ::ng-deep .p-toast-detail{
+  text-align: center;
+}
+
+:host ::ng-deep .p-toast{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+/* newLogin */
+
+h1 {
+  font-size: 1.5em;
+  color: #131125;
+  font-weight: 700;
+  margin: 0;
+}
+
+
+.login-box {
+  display: flex;
+  width: 32em;
+  height: 70%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.025);
+  z-index: 1;
+  padding: 2rem;
+  background-color: #ffff;
+  align-items: center;
+}
+
+
+.login-box-formbox{
+  width: 100%;
+  height: 100%;
+}
+
+.login-box-signup a {
+  color: #a0a4e3;
+  font-weight: 600;
+  text-decoration: inherit;
+}
+
+.login-box-signup a:hover, .login-box-signup a:focus {
+  color: #0f1396;
+}
+
+.login-box-login {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.login-box-login > * {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+form > div {
+  position: relative;
+  padding: 1.5em 0;
+  font-family: 'SharpSans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+form > div input {
+  color: #000000;
+  width: 85%;
+  padding: 1.2em 1.5em;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+}
+
+form > div select {
+  color: #000000;
+  width: 85%;
+  padding: 1em 1.5em;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+}
+
+form > div input.input-email, form > div input.input-password {
+  background-repeat: no-repeat;
+  background-position: right 1em top 1.25em;
+}
+
+form > div input.input-email {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 30 30" stroke-width="2" stroke="lightgrey" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="4"></circle><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28"></path></svg>');
+}
+
+form > div input.ng-invalid.ng-touched {
+  outline-color: red;
+  border-color: red;
+}
+
+form > div input:focus {
+  outline-color: #3B82F6;
+  border-color: #3B82F6;
+}
+
+form > div select:focus {
+  outline-color: #3B82F6;
+  border-color: #3B82F6;
+}
+
+form > div:focus-within label {
+  color: #2028eb;
+  font-weight: 600;
+}
+
+form > div label {
+  font-size: 0.85em;
+  position: absolute;
+  top: 1.25em;
+  left: 4.0em;
+  background: #ffffff;
+  padding: 0 0.5em;
+}
+
+form > div:focus-within label {
+  color: #2028eb;
+  font-weight: 600;
+}
+
+.alternate-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 13px;
+  text-decoration: underline;
+  color: #0171d3;
+}
+
+.quote-container {
+  padding: 1em 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* .quote-container::before {
+  content: "";
+  position: absolute;
+  top: -4.5em;
+  left: -0.65em;
+  width: 3.5em;
+  height: 3.5em;
+  background-color: #93f8e0;
+  border-radius: 100%;
+} */
+
+/* .quote-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15px;
+  height: 100%;
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0.25);
+} */
+
+.quote {
+  color: #da2020;
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.quote-small {
+  color: #ebeef7;
+  line-height: 180%;
+  padding: 2em 0 0 6em;
+  position: relative;
+}
+
+.quote-small::before {
+  content: "";
+  position: absolute;
+  top: 2.75em;
+  left: 1.2em;
+  width: 3em;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+

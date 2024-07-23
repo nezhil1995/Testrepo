@@ -1,0 +1,72 @@
+<div class="body">
+  <app-loader *ngIf="load == true">
+    <div class="loader"></div>
+  </app-loader>
+
+  <div *ngIf="load != true">
+
+    <div class="drop">
+
+      <form [formGroup]="form"  class="form">
+
+        <div class="form-control">
+          <label for="name">Date</label>
+          <input type="date" formControlName="starttime" placeholder="Enter" [max]="date" required>
+          <div *ngIf="form.get('starttime')?.invalid && (form.get('starttime')?.dirty || form.get('starttime')?.touched)" class="error">
+            <div *ngIf="form.get('starttime')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Select the Meter</label>
+          <select formControlName="mtrname">
+            <option value="">-- Select Meter --</option>
+            <option *ngFor="let meter of meterNameDrop" [value]="meter.metername">
+              {{ meter.metername }}
+            </option>
+          </select>
+          <div *ngIf="form.get('mtrname')?.invalid && (form.get('mtrname')?.dirty || form.get('mtrname')?.touched)" class="error">
+            <div *ngIf="form.get('mtrname')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">GET DATA</button>
+
+      </form>
+
+    </div>
+
+    <app-loader *ngIf="chartLoad == true && form.valid" class="divloader"></app-loader>
+
+    <div class="linechart" *ngIf="chartLoad != true && form.valid && this.selectedData">
+
+        <div class="title">
+          <!-- <h4>{{title}}</h4> -->
+        </div>
+
+        <!-- <div class="titledis" *ngIf="visiblechart != true">
+          <h4>To fill out the form to show the chart</h4>
+        </div> -->
+
+        <apx-chart id="chart"
+          [series]="areachartTrans.series"
+          [chart]="areachartTrans.chart"
+          [xaxis]="areachartTrans.xaxis"
+          [stroke]="areachartTrans.stroke"
+          [dataLabels]="areachartTrans.dataLabels"
+          [yaxis]="areachartTrans.yaxis"
+          [labels]="areachartTrans.labels"
+          [legend]="areachartTrans.legend"
+          [title]="areachartTrans.title"
+          [subtitle]="areachartTrans.subtitle"
+        ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>

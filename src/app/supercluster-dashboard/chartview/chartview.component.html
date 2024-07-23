@@ -1,0 +1,186 @@
+<div class="chartBody">
+
+  <div class="secchart">
+    <form [formGroup]="form">
+      
+      <div class="loader" *ngIf="this.plantLoad === true">
+        <div class="loader-text">Fetching Plant</div>
+        <div class="loader-bar"></div>
+      </div>
+
+      <div class="control" *ngIf="this.plantLoad !== true">
+        <p-multiSelect appendTo="body" [options]="plant" formControlName="plantname" optionLabel="amaplantname" optionValue="amaplantname" defaultLabel="--Select Plants--"></p-multiSelect>
+      </div>
+
+      <h5>SELECT YEAR</h5>
+      <div class="control">
+        <p-calendar appendTo="body" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="maxDate"
+        (onSelect)="GetYearSECData($event)"
+        [style]="{ width: '195px'}"
+        >
+        </p-calendar>
+      </div>
+    </form>
+
+
+    <app-loader class="divloader" *ngIf="this.SecLoad === true"></app-loader>
+
+    <highcharts-chart 
+    *ngIf="this.SecLoad !== true && this.form.valid"
+    [Highcharts]="Highcharts"
+    constructorType="chart"
+    [options]="secChartOptions"
+    id="highchart"
+    ></highcharts-chart>
+
+  </div>
+
+  <div class="chart_container">
+
+    <!-- PLANT COST DATA BASED ON THE YEAR -->
+
+    <div class="chart1">
+      <form [formGroup]="formPlantYear">
+      
+        <div class="loader" *ngIf="this.plantLoad === true">
+          <div class="loader-text">Fetching Plant</div>
+          <div class="loader-bar"></div>
+        </div>
+  
+        <div class="control" *ngIf="this.plantLoad !== true">
+          <label>Select Plant</label>
+          <select formControlName="plantname">
+            <option value="">-- None --</option>
+            <option *ngFor="let meter of plant" [value]="meter.amaplantname">
+              {{ meter.amaplantname }}
+            </option>
+          </select>
+        </div>
+  
+        <!-- <h5>SELECT YEAR</h5> -->
+        <div class="control">
+          <label>Select Year</label>
+          <p-calendar appendTo="body" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetPlantYearCost($event)"
+          [style]="{ width: '195px'}"
+          >
+          </p-calendar>
+        </div>
+      </form>
+
+      <app-loader class="divloader" *ngIf="this.plantYearLoad === true"></app-loader>
+
+      <apx-chart id="chart" *ngIf="this.plantYearLoad != true && this.formPlantYear.valid"
+          [series]="PlantYearchartOptions.series"
+          [chart]="PlantYearchartOptions.chart"
+          [xaxis]="PlantYearchartOptions.xaxis"
+          [stroke]="PlantYearchartOptions.stroke"
+          [plotOptions]="PlantYearchartOptions.plotOptions"
+          [dataLabels]="PlantYearchartOptions.dataLabels"
+          [yaxis]="PlantYearchartOptions.yaxis"
+          [labels]="PlantYearchartOptions.labels"
+          [legend]="PlantYearchartOptions.legend"
+          [title]="PlantYearchartOptions.title"
+          [colors]="PlantYearchartOptions.colors"
+          [subtitle]="PlantYearchartOptions.subtitle"
+          [tooltip]="PlantYearchartOptions.tooltip"
+        ></apx-chart>
+    </div>
+
+    <!-- COMPARISION PLANT COST DATA BASED ON THE YEAR -->
+
+    <div class="chart2">
+
+      <form [formGroup]="CompPlantYear">
+      
+        <div class="loader" *ngIf="this.plantLoad === true">
+          <div class="loader-text">Fetching Plant</div>
+          <div class="loader-bar"></div>
+        </div>
+  
+        <div class="control" *ngIf="this.plantLoad !== true">
+          <label>Select Plant</label>
+          <p-multiSelect appendTo="body" [options]="plant" formControlName="plantname" optionLabel="amaplantname" optionValue="amaplantname" defaultLabel="--None--"></p-multiSelect>
+        </div>
+  
+        <!-- <h5>SELECT YEAR</h5> -->
+        <div class="control">
+          <label>Select Year</label>
+          <p-calendar appendTo="body" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GeComptPlantYearCost($event)"
+          [style]="{ width: '195px'}"
+          >
+          </p-calendar>
+        </div>
+      </form>
+
+      <app-loader class="divloader" *ngIf="this.CompplantYearLoad === true"></app-loader>
+
+      <apx-chart id="chart" *ngIf="this.CompplantYearLoad != true && this.CompPlantYear.valid"
+          [series]="CompPlantchartOptions.series"
+          [chart]="CompPlantchartOptions.chart"
+          [xaxis]="CompPlantchartOptions.xaxis"
+          [stroke]="CompPlantchartOptions.stroke"
+          [plotOptions]="CompPlantchartOptions.plotOptions"
+          [dataLabels]="CompPlantchartOptions.dataLabels"
+          [yaxis]="CompPlantchartOptions.yaxis"
+          [labels]="CompPlantchartOptions.labels"
+          [legend]="CompPlantchartOptions.legend"
+          [title]="CompPlantchartOptions.title"
+          [colors]="CompPlantchartOptions.colors"
+          [subtitle]="CompPlantchartOptions.subtitle"
+          [tooltip]="CompPlantchartOptions.tooltip"
+      ></apx-chart>
+
+    </div>
+    
+  </div>
+
+
+  <div class="costchart">
+    <form [formGroup]="plantsCostMon">
+
+      <h5>SELECT MONTH</h5>
+      <div class="control">
+        <p-calendar appendTo="body" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="maxDate"
+        (onSelect)="GetPlantsCostData($event)"
+        [style]="{ width: '195px'}"
+        >
+        </p-calendar>
+      </div>
+    </form>
+
+    <app-loader class="divloader" *ngIf="this.plantsCostLoad === true"></app-loader>
+
+    <apx-chart id="chart" *ngIf="this.plantsCostLoad != true && this.plantsCostMon.valid"
+          [series]="plantCostareaOptions.series"
+          [chart]="plantCostareaOptions.chart"
+          [xaxis]="plantCostareaOptions.xaxis"
+          [stroke]="plantCostareaOptions.stroke"
+          [plotOptions]="plantCostareaOptions.plotOptions"
+          [dataLabels]="plantCostareaOptions.dataLabels"
+          [yaxis]="plantCostareaOptions.yaxis"
+          [labels]="plantCostareaOptions.labels"
+          [legend]="plantCostareaOptions.legend"
+          [title]="plantCostareaOptions.title"
+          [colors]="plantCostareaOptions.colors"
+          [subtitle]="plantCostareaOptions.subtitle"
+          [tooltip]="plantCostareaOptions.tooltip"
+      ></apx-chart>
+
+  </div>
+
+
+</div>

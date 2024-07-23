@@ -1,0 +1,180 @@
+<body>
+<app-loader *ngIf="load == true"></app-loader>
+
+<div *ngIf="load != true">
+
+  <div class="drop">
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Select Month</label>
+        <p-calendar placeholder="Select Month" formControlName="selectMonth" appendTo="body" [(ngModel)]="date" view="month" dateFormat="mm/yy" [readonlyInput]="true" [maxDate]="maxDate"></p-calendar>
+        <div *ngIf="form.get('selectMonth')?.invalid && (form.get('selectMonth')?.dirty || form.get('selectMonth')?.touched)" class="error">
+          <div *ngIf="form.get('selectMonth')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control calendar">
+        <label for="name">Select the Meter</label>
+        <select formControlName="srcname">
+          <option value="">-- Select Source --</option>
+          <option *ngFor="let meter of metersrc" [value]="meter.name" (changes)="ToModify($any($event.target).value)">
+            {{ meter.name }}
+          </option>
+        </select>
+        <div *ngIf="form.get('srcname')?.invalid && (form.get('srcname')?.dirty || form.get('srcname')?.touched)" class="error">
+          <div *ngIf="form.get('srcname')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">GET DATA</button>
+
+      <div class="export">
+        <button class="button expData" [disabled]="Tabload" (click)="ExportData()"><fa-icon [icon]="meter" [size]="'lg'"></fa-icon>EXPORT DATA</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <app-loader *ngIf="Tabload === true && vis" style="height: 60vh;"></app-loader>
+
+  <div *ngIf="Tabload != true && this.form.valid">
+
+      <p-table #dt5 id="excessdt" [value]="TableData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+        [paginator]="false"
+        [rows]="32"
+        class="custom-table"
+        [scrollable]="true"
+        scrollHeight="475px"
+        >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="tableHeadrr" colspan="5">
+              <p *ngIf="this.CostofMonth" pTooltip="Click to Show Formula" (click)="showFormulaDialog()">COST = {{CurrencyType}}{{this.CostofMonth.toLocaleString()}} <i class="fi fi-sr-info"></i></p>
+              &nbsp; KVA UTILIZATION REPORT FOR {{title.toUpperCase()}}
+            </th>
+          </tr>
+          <tr>
+              <th>DATE</th>
+              <th>ALLOCATED DEMAND (KVA)</th>
+              <th>UTILIZED DEMAND (KVA)</th>
+              <th>UNUTILIZED DEMAND (KVA)</th>
+              <th>TOTAL UTILIZATION (%)</th>
+              <!-- <th>COST FOR UTILIZATION </th> -->
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-Data>
+          <tr>
+              <td>{{ Data.date}}</td>
+              <td>{{ Data.totalcapacity.toLocaleString() }}</td>
+              <td>{{Data.consumedcapacity.toLocaleString()}}</td>
+              <td>{{Data.excess_power.toLocaleString()}}</td>
+              <td>{{Data.utility_percentage | number:'1.1-2' || '-'}}</td>
+              <!-- <td>₹{{Data.penalty_cost | number:'1.1-2' || '-'}}</td> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-Data>
+          <tr>
+            <td class="footd" colspan="5">No Data</td>
+          </tr>
+        </ng-template>
+    </p-table>
+
+    <div class="titlehour">
+      <h4>Hourly Demand</h4>
+
+      <div class="export">
+        <button class="button expData" [disabled]="Tabload" (click)="HourlyReport()"><fa-icon [icon]="meter" [size]="'lg'"></fa-icon>EXPORT DATA</button>
+      </div>
+    </div>
+
+    <p-table id="kva" [value]="HourlyData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+        [paginator]="true"
+        [rows]="50"
+        [rowsPerPageOptions]="[50,100]"
+        class="custom-table"
+        [scrollable]="true"
+        scrollHeight="500px"
+        >
+        <ng-template pTemplate="header" >
+          <tr>
+              <th class="custom-header" pFrozenColumn> Date </th>
+              <th> 6:00  </th>
+              <th> 7:00  </th>
+              <th> 8:00  </th>
+              <th> 9:00  </th>
+              <th> 10:00  </th>
+              <th> 11:00  </th>
+              <th> 12:00  </th>
+              <th> 13:00  </th>
+              <th> 14:00  </th>
+              <th> 15:00  </th>
+              <th> 16:00  </th>
+              <th> 17:00  </th>
+              <th> 18:00  </th>
+              <th> 19:00  </th>
+              <th> 20:00  </th>
+              <th> 21:00  </th>
+              <th> 22:00  </th>
+              <th> 23:00  </th>
+              <th> 0:00  </th>
+              <th> 1:00  </th>
+              <th> 2:00  </th>
+              <th> 3:00  </th>
+              <th> 4:00  </th>
+              <th> 5:00  </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-Data>
+          <tr>
+              <td pFrozenColumn>{{Data.Date}}</td>
+              <td>{{Data.h1}}</td>
+              <td>{{Data.h2}}</td>
+              <td>{{Data.h3}}</td>
+              <td>{{Data.h4}}</td>
+              <td>{{Data.h5}}</td>
+              <td>{{Data.h6}}</td>
+              <td>{{Data.h7}}</td>
+              <td>{{Data.h8}}</td>
+              <td>{{Data.h9}}</td>
+              <td>{{Data.h10}}</td>
+              <td>{{Data.h11}}</td>
+              <td>{{Data.h12}}</td>
+              <td>{{Data.h13}}</td>
+              <td>{{Data.h14}}</td>
+              <td>{{Data.h15}}</td>
+              <td>{{Data.h16}}</td>
+              <td>{{Data.h17}}</td>
+              <td>{{Data.h18}}</td>
+              <td>{{Data.h19}}</td>
+              <td>{{Data.h20}}</td>
+              <td>{{Data.h21}}</td>
+              <td>{{Data.h22}}</td>
+              <td>{{Data.h23}}</td>
+              <td>{{Data.h24}}</td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-Data>
+        <tr>
+          <td class="footd" colspan="25">No Data</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+</div>
+</body>
+
+<p-dialog [(visible)]="DisplayModal" header="Cost Formula" [style]="{ width: 'auto', height: '40vh' }" [draggable]="false" [closable]="true" [modal]="true">
+  <div class="formula">
+    <p>Cost = (Attained Demand x KVA Cost) + (Excess KVA Comsumed x Penalty Cost)</p>
+    <p>Cost = (({{this.AttKva}} x {{this.per}}%) x {{this.KVACosting}}) + ({{this.ExcessKVA}} x {{this.Pencost}})</p>
+    <p>Cost = {{CurrencyType}}{{this.CostofMonth.toLocaleString()}}</p>
+  </div>
+</p-dialog>

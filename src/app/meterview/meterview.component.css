@@ -1,0 +1,185 @@
+body{
+  margin-left: 3.7rem;
+  margin-top: 2.4rem;
+  height: auto;
+  padding: 1rem;
+  letter-spacing: 0.7px;
+}
+
+h3{
+  font-size: 20px;
+  text-align: center;
+}
+
+#line{
+  display: flex;
+  max-height: 100%;
+  width: 0.2rem;
+  background-color: #dfdfdf;
+  border-radius: 20px;
+  margin-left: 0.3rem;
+}
+
+.badge{
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.sticky-badge-wrapper {
+  position: sticky;
+  top: 50px; /* Adjust this value to add space from the top */
+  background-color: white;
+  z-index: 1;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.sticky-badge {
+  display: flex;
+  justify-content: center;
+  padding: 0.7rem;
+  position: relative;
+  z-index: 1;
+  transition: top 0.2s ease;
+}
+
+.sticky {
+  position: fixed !important;
+  top: 50px; 
+  width: 100%;
+  background-color: white;
+}
+
+
+::ng-deep .p-badge.p-badge-lg{
+  font-family: 'SharpSans', sans-serif;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .p-tag{
+  font-family: 'SharpSans', sans-serif;
+}
+
+:host ::ng-deep .odometer.odometer-theme-default{
+  font-family: 'SharpSans', sans-serif;
+  line-height: 1.1em;
+  letter-spacing: 0;
+}
+
+.unit{
+  text-align: left;
+  color: gray;
+  font-size: 12px;
+}
+
+.value{
+  text-align: right;
+  font-size: 15px;
+}
+
+.kwh{
+  color: gold;
+}
+
+.shiftico{
+  color: blue;
+  text-align: right;
+}
+
+.fre{
+  color:green
+}
+
+.card-box{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: left;
+  align-items: center;
+}
+
+.imgtag{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  height: 10px;
+  margin-top: -3.7rem;
+  padding-left: -1.7em;
+  margin-bottom: 2.3rem;
+}
+
+.card {
+  width:400px;
+  height: 255px;
+  margin: 0.7rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+  overflow: hidden;
+}
+
+.titlebox{
+  padding-top: 0.1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-weight: 500;
+  color: rgb(31 41 55);
+  font-size: 13px;
+}
+
+.htitle{
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #da2020;
+}
+
+:host ::ng-deep .p-tag{
+  font-size: 11px;
+}
+
+.stitle, .mtitle {
+  display: flex;
+  padding: 0.4rem;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 1rem;
+}
+
+.details{
+  display: flex;
+  /* margin-top: -0.7rem; */
+}
+
+.shift{
+  padding-left: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.meter{
+  padding-left: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+tr{
+  height: 2.2rem;
+}
+
+.table tr td{
+  padding: 0px;
+}

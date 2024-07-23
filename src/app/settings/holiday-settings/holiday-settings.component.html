@@ -1,0 +1,144 @@
+<body>
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+<div *ngIf="load != true">
+
+  <div class="table">
+    <div class="tabletop">
+      <div class="add">
+        <button *ngIf="loginType" class="button addBtn" (click)="showDialog()" ><fa-icon [icon]="add" [size]="'lg'"></fa-icon></button>
+      </div>
+      <div class="search">
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt5.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+        </span>
+
+        <form [formGroup]="Monthform">
+          <div class="control">
+            <label>Select Month</label>
+            <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetMonthCostData($event)"
+              >
+            </p-calendar>
+          </div>
+        </form>
+      </div>
+      <div class="delete">
+        <button *ngIf="loginType" class="button delBtn" role="button" [disabled]="!selected.length" (click)="deleteselectedRows()" ><fa-icon [icon]="del" [size]="'lg'"></fa-icon></button>
+      </div>
+    </div>
+    <p-table #dt5 id="exportpngtable" [value]="Holidaydata" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+      [(selection)]="selected"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[50,100,500,1000]"
+      [loading]="loading"
+      [globalFilterFields]="['hd_date', 'hd_day', 'hd_description']"
+      class="custom-table"
+      [scrollable]="true"
+      [scrollHeight]="TableHeight"
+      >
+      <ng-template pTemplate="header">
+        <tr>
+            <th *ngIf="loginType" style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="hd_date">DATE<p-sortIcon field="hd_date"></p-sortIcon></th>
+            <th pSortableColumn="hd_day">DAY<p-sortIcon field="hd_day"></p-sortIcon></th>
+            <th pSortableColumn="hd_description">DESCRIPTION<p-sortIcon field="hd_description"></p-sortIcon></th>
+            <th *ngIf="loginType">EDIT</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-PngCost>
+        <tr>
+            <td *ngIf="loginType">
+              <p-tableCheckbox [value]="PngCost"></p-tableCheckbox>
+            </td>
+            <td>{{PngCost.hd_date}}</td>
+            <td>{{PngCost.hd_day}}</td>
+            <td>{{PngCost.hd_description }}</td>
+            <td *ngIf="loginType"><button class="edtBtn" role="button" (click)="EditModal(PngCost)" ><fa-icon [icon]="edit" [size]="'lg'"></fa-icon></button></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-Data>
+      <tr>
+        <td class="footd" colspan="5">No Data Available</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+      <button class="Btn" [disabled]="Holidaydata.length == 0" (click)="exportExcel()">
+        <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+        <div class="text">EXPORT</div>
+      </button>        
+    </ng-template>
+    </p-table>
+  </div>
+
+</div>
+</body>
+
+
+<p-dialog [(visible)]="DisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Date</label>
+        <input type="date" formControlName="hd_date" placeholder="Enter" required (input)="OnDateChanges()">
+        <div *ngIf="form.get('hd_date')?.invalid && (form.get('hd_date')?.dirty || form.get('hd_date')?.touched)" class="error">
+          <div *ngIf="form.get('hd_date')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Day</label>
+        <input type="text" formControlName="hd_day" placeholder="Enter" required [readOnly]="true">
+        <div *ngIf="form.get('hd_day')?.invalid && (form.get('hd_day')?.dirty || form.get('hd_day')?.touched)" class="error">
+          <div *ngIf="form.get('hd_day')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Description</label>
+        <input type="text" formControlName="hd_description" placeholder="Enter" required>
+        <div *ngIf="form.get('hd_description')?.invalid && (form.get('hd_description')?.dirty || form.get('hd_description')?.touched)" class="error">
+          <div *ngIf="form.get('hd_description')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="name">Plantname</label>
+        <input type="text" formControlName="hd_plantname"  placeholder="Enter" required [readOnly]="true">
+        <div *ngIf="form.get('hd_plantname')?.invalid && (form.get('hd_plantname')?.dirty || form.get('hd_plantname')?.touched)" class="error">
+          <div *ngIf="form.get('hd_plantname')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="closeModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+</p-dialog>

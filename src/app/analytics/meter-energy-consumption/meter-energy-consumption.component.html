@@ -1,0 +1,51 @@
+<div>
+
+    <form id="form" [formGroup]="form">
+
+      <h4>SELECT</h4>
+        <div class="control">
+          <p-calendar (onSelect)="onDateRangeSelect()" dataType="date" appendTo="body" dateFormat="dd/mm/yy" #calendar placeholder="Select Date Range" formControlName="dateRange" [(ngModel)]="rangeDates" [showButtonBar]="false" selectionMode="range" [maxDate]="maxDate" [readonlyInput]="true"></p-calendar>
+        </div>
+
+        <!-- <button class="button ok" [disabled]="this.form.invalid" (click)="OnSubmit()">GET DATA</button> -->
+
+        <button class="button expData" [disabled]="load" (click)="exportData()"><fa-icon [icon]="meter" [size]="'lg'"></fa-icon>EXPORT DATA</button>
+
+    </form>
+
+    <app-loader *ngIf="load == true && this.form.valid" id="divloader"></app-loader>
+
+    <p-table #dt1 id="dt" [value]="EnrConsumptionData" [tableStyle]="{ 'width': this.tableWidth }" styleClass="p-datatable-gridlines"
+      *ngIf="load != true && this.form.valid"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[50, 100, 200, 500]"
+      [globalFilterFields]="['metername']"
+      class="custom-table"
+      [scrollable]="true"
+      [scrollHeight]="TableHeight"
+      >
+      <ng-template pTemplate="header">
+        <tr>
+          <th id="header-meter" pFrozenColumn pSortableColumn="metername">METER NAME<p-sortIcon field="metername" class="sort-icon"></p-sortIcon></th>
+          <ng-container *ngFor="let date of header">
+            <th style="width: 270px;">{{ date }}</th>
+          </ng-container>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-User>
+          <tr>
+              <td pFrozenColumn>{{ User.metername }}</td>
+              <ng-container *ngFor="let date of header">
+                <td>{{ User[date] || '0' }}</td>
+              </ng-container>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-Data>
+        <tr>
+          <td class="footd" colspan="10">No Data Available</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+</div>

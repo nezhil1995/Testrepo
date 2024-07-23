@@ -1,0 +1,47 @@
+<div>
+
+
+  <div class="drop">
+    <form [formGroup]="form" class="form">
+
+      <div class="form-control">
+        <label for="name">Select Date</label>
+        <input type="date" formControlName="date" placeholder="Enter" [max]="date" (input)="OnDateSelect()" required>
+        <div *ngIf="form.get('sessiondate')?.invalid && (form.get('sessiondate')?.dirty || form.get('sessiondate')?.touched)" class="error">
+          <div *ngIf="form.get('sessiondate')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control" *ngIf="load !== true && this.form.valid">
+        <label for="name">Select</label>
+        <select formControlName="type" (change)="OnSelectChange($any($event.target).value)">
+          <option value="">-- Select --</option>
+          <option value="Energy">Energy Data</option>
+          <option value="Cost">Cost Data</option>
+        </select>
+        <div *ngIf="form.get('type')?.invalid && (form.get('type')?.dirty || form.get('type')?.touched)" class="error">
+          <div *ngIf="form.get('type')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <app-loader *ngIf="load == true && this.form.valid" class="divloader"></app-loader>
+
+  <div class="linechart" *ngIf="load !== true && this.form.valid">
+    <highcharts-chart 
+      [Highcharts]="Highcharts"
+      constructorType="chart"
+      [options]="ChartOptions"
+      [(update)]="updateFlag"
+      id="chart"
+      ></highcharts-chart>
+  </div>
+
+</div>

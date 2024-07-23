@@ -1,0 +1,255 @@
+<body class="bod">
+
+<p-tabView [scrollable]="true" orientation="left">
+
+  <p-tabPanel [style]="{ 'background-color': '#C8E4B2'}">
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <i class="fi fi-bs-smoke"></i>
+        <span>DASHBOARD</span>
+      </div>
+    </ng-template>
+
+    <div *ngIf="Dashload === true" class="divloader">
+      <div class="dot-spinner">
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+        <div class="dot-spinner__dot"></div>
+    </div>
+    </div>
+
+    <div *ngIf="Dashload !== true">
+
+    <div class="imagecontent">
+    <div class="cards">
+
+      <div class="card">
+        <div class="icon">
+          <h4>Emission by Electricity</h4>
+          <!-- <p id="red"><i class="fi fi-rr-arrow-trend-up"></i></p> -->
+          </div>
+        <div class="card-main">
+          <div>
+            <fa-icon id="earth" [icon]="elcBolt" [size]="'lg'"></fa-icon>
+          </div>
+          <div class="Emvalue">
+            <tm-ng-odometer class="small" [number]="energy_con" [theme]="'minima'" [config]="{ format: '(,ddd)' }"></tm-ng-odometer> <h4>Kg CO<sub>2</sub> e</h4>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <h4>Emission by Fuel</h4>
+          <!-- <p id="green"><i class="fi fi-rr-arrow-trend-down"></i></p> -->
+          </div>
+        <div class="card-main">
+          <div>
+            <fa-icon id="earth" [icon]="gas" [size]="'lg'"></fa-icon>
+          </div>
+          <div class="Emvalue">
+            <tm-ng-odometer class="small" [number]="fuel_con" [theme]="'minima'" [config]="{ format: '(,ddd)' }"></tm-ng-odometer> <h4>Kg CO<sub>2</sub> e</h4>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <h4>Emission by Waste</h4>
+          <!-- <p id="red"><i class="fi fi-rr-arrow-trend-up"></i></p> -->
+          </div>
+        <div class="card-main">
+          <fa-icon id="earth" [icon]="dump" [size]="'lg'"></fa-icon>
+          <div class="Emvalue">
+            <tm-ng-odometer class="small" [number]="waste" [theme]="'minima'" [config]="{ format: '(,ddd)' }"></tm-ng-odometer> <h4>Kg CO<sub>2</sub> e</h4>
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+    <div class="images">
+      <img src="../../assets/ui-images/image3.jpg" alt="" height="190px" width="480px">
+    </div>
+    </div>
+
+    <div class="container">
+
+      <div class="chart1">
+        <div class="title">
+          <h4>Emission By Scope (YOD)</h4>
+        </div>
+        <div class="scopediv">
+          <table class="scopetable">
+            <tr>
+              <td style="width: 5rem;">Scope 1:</td>
+              <td><fa-icon id="info" [icon]="info" pInputText pTooltip="Info" tooltipPosition="right" placeholder="Top" (click)="InfoClick('Scope 1')"></fa-icon></td>
+            </tr>
+            <tr>
+              <td style="width: 5.4rem;">Scope 2:</td>
+              <td><fa-icon id="info" [icon]="info" pInputText pTooltip="Info" tooltipPosition="right" placeholder="Top" (click)="InfoClick('Scope 2')"></fa-icon></td>
+            </tr>
+            <tr>
+              <td style="width: 5.4rem;">Scope 3:</td>
+              <td><fa-icon id="info" [icon]="info" pInputText pTooltip="Info" tooltipPosition="right" placeholder="Top" (click)="InfoClick('Scope 3')"></fa-icon></td>
+            </tr>
+          </table>
+          <highcharts-chart 
+            id="roundchart1"
+            [Highcharts]="Highcharts"     
+            [options]="donchartOptions" 
+            [runOutsideAngular]="true" 
+            [oneToOne]="true"
+            >
+          </highcharts-chart>
+        </div>
+       
+      </div>
+
+      <div class="chart1">
+        <div class="title">
+          <h4>Emission By Source (This Month)</h4>
+        </div>
+        <highcharts-chart 
+          id="roundchart"
+          [Highcharts]="Highcharts"     
+          [options]="piechartOptions" 
+          [runOutsideAngular]="true" 
+          [oneToOne]="true"
+          >
+        </highcharts-chart>
+      </div>
+
+      <div class="chart1 chartscr">
+        <div class="title">
+          <h4>Monthly Emission By Scope</h4>
+        </div>
+        <apx-chart id="chart"
+          [series]="areachartTrans.series"
+          [chart]="areachartTrans.chart"
+          [xaxis]="areachartTrans.xaxis"
+          [stroke]="areachartTrans.stroke"
+          [dataLabels]="areachartTrans.dataLabels"
+          [yaxis]="areachartTrans.yaxis"
+          [labels]="areachartTrans.labels"
+          [legend]="areachartTrans.legend"
+          [title]="areachartTrans.title"
+          [subtitle]="areachartTrans.subtitle"
+          [theme]="areachartTrans.theme"
+          [markers]="areachartTrans.markers"
+          [tooltip]="areachartTrans.tooltip"
+        ></apx-chart>
+      </div>
+
+    </div>
+
+    <div class="srcCarbon Cmargin">
+      <div class="form-title">
+        <form [formGroup]="form" class="form">
+          <div class="form-control">
+            <label>Select</label>
+            <select formControlName="type" [(ngModel)]="DefaultSelect" (change)="OntypeChanges()">
+              <option value="">-- Select --</option>
+              <option *ngFor="let select of seleter" [value]="select.value">
+                {{ select.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-control" *ngIf="this.form.get('type')?.value === 'date basis'">
+            <label>Select Date</label>
+            <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetCarbonEmmdata($event)"
+              >
+            </p-calendar>
+          </div>
+
+          <div class="form-control" *ngIf="this.form.get('type')?.value === 'month basis'">
+            <label>Select Month</label>
+            <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="month" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetCarbonEmmdata($event)"
+              >
+            </p-calendar>
+          </div>
+
+          <div class="form-control" *ngIf="this.form.get('type')?.value === 'year basis'">
+            <label>Select Year</label>
+            <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetCarbonEmmdata($event)"
+              >
+            </p-calendar>
+          </div>
+        </form>
+      </div>
+
+      <app-loader class="fivloader" *ngIf="srcload == true"></app-loader>
+
+      <highcharts-chart 
+        id="chart" *ngIf="srcload != true && this.form.valid"
+        [Highcharts]="Highcharts"     
+        [options]="linechartOptions" 
+        [runOutsideAngular]="true" 
+        [oneToOne]="true"
+        >
+      </highcharts-chart>
+    </div>
+
+    <app-sankey></app-sankey>
+
+    </div>
+  </p-tabPanel>
+
+  <p-tabPanel [style]="{ 'background-color': '#C8E4B2'}">
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <i class="fi fi-sr-arrow-trend-up"></i>
+        <span>ANALYTICS</span>
+      </div>
+    </ng-template>
+
+    <app-analytics [DropsrcNames]="sourceNames" ></app-analytics>
+
+  </p-tabPanel>
+
+  <p-tabPanel [style]="{ 'background-color': '#C8E4B2'}">
+    <ng-template pTemplate="header">
+      <div class="tabview">
+        <i class="fi fi-ss-table-list"></i>
+        <span>SUMMARY</span>
+      </div>
+    </ng-template>
+
+    <app-summary></app-summary>
+
+  </p-tabPanel>
+
+</p-tabView>
+
+</body>
+
+
+<p-dialog [header]="DiaHeader" [(visible)]="displayModal" [draggable]="false" [closable]="true" [modal]="true" [style]="{ width: '65vh', height: 'auto', fontfamily: 'SharpSans' }">
+  <div>
+    <table id="infotable">
+      <ng-container *ngFor="let data of scopeData">
+        <tr><td>{{data}}</td></tr>
+      </ng-container>
+    </table>
+  </div>
+</p-dialog>

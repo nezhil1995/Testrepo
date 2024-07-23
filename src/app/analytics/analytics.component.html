@@ -1,0 +1,211 @@
+<div class="body">
+
+  <p-tabView [scrollable]="true" orientation="left">
+
+    <!-- SANKEYCHART -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <!-- <fa-icon [icon]="temp"></fa-icon> -->
+          <i class="fi fi-br-diagram-sankey"></i>
+          <span>SANKEY DIAGRAM</span>
+        </div>
+      </ng-template>
+
+      <app-sankey></app-sankey>
+
+    </p-tabPanel>
+
+    <!-- ENERGY PREDICTION -->
+    <!-- <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <i class="fi fi-br-arrow-trend-down"></i>
+          <span>ENERGY PREDICTION</span>
+        </div>
+      </ng-template>
+
+      <app-energy-predection></app-energy-predection>
+
+    </p-tabPanel> -->
+
+     <!-- METER ENERGY CONSUMPTION -->
+     <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <!-- <fa-icon [icon]="temp"></fa-icon> -->
+          <i class="fi fi-ss-bolt"></i>
+          <span>ENERGY CONSUMPTION</span>
+        </div>
+      </ng-template>
+
+      <app-meter-energy-consumption></app-meter-energy-consumption>
+
+    </p-tabPanel>
+
+    <!-- EXCESSPOWER -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="plug"></fa-icon>
+          <span>KVA REPORT</span>
+        </div>
+      </ng-template>
+
+      <app-excesspower></app-excesspower>
+
+    </p-tabPanel>
+
+    <!-- SESSION PEAK -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="ses"></fa-icon>
+          <span>SESSION GRAPH</span>
+        </div>
+      </ng-template>
+
+      <app-peak-session></app-peak-session>
+
+    </p-tabPanel>
+
+    <!-- METER HEALTH -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="health"></fa-icon>
+          <span>METER HEALTH REPORT</span>
+        </div>
+      </ng-template>
+
+      <app-meterhealth></app-meterhealth>
+
+    </p-tabPanel>
+
+    <!-- Session MANAGEMENT -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="data"></fa-icon>
+          <span>SESSION REPORT</span>
+        </div>
+      </ng-template>
+
+        <div class="drop">
+          <form [formGroup]="form" class="form">
+
+            <div class="form-control">
+              <label for="name">Date</label>
+              <input type="date" formControlName="sessiondate" placeholder="Enter" [max]="date" required>
+              <div *ngIf="form.get('sessiondate')?.invalid && (form.get('sessiondate')?.dirty || form.get('sessiondate')?.touched)" class="error">
+                <div *ngIf="form.get('sessiondate')?.errors!required">
+                  *required
+                </div>
+              </div>
+            </div>
+            <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">GET DATA</button>
+          </form>
+
+        </div>
+
+        <app-loader *ngIf="load == true && this.form.valid" class="divloader"></app-loader>
+
+        <div *ngIf="load != true && this.chartData && this.form.valid">
+
+          <div class="container" >
+
+            <div class="donut">
+              <div class="title">
+                <h4>Sessionwise Energy Consumption (Overall)</h4>
+              </div>
+              <div class="timer">
+                <span>
+                  <ng-container *ngFor="let time of this.timeArr">
+                    <p>{{time.sessionName}}: <ng-container *ngFor="let sestime of time.time">{{formateStr(sestime)}}, </ng-container> </p>
+                  </ng-container>
+                </span>
+                <apx-chart id="roundchart" #chart1
+                  [series]="piechart1.series"
+                  [chart]="piechart1.chart"
+                  [labels]="piechart1.labels"
+                  [colors]="piechart1.colors"
+                  [legend]="piechart1.legend"
+                  [dataLabels]="piechart1.dataLabels"
+                  [tooltip]="piechart1.tooltip"
+                ></apx-chart>
+              </div>
+              <p class="hint"><span>*</span>Click on the legend to visualize the Groupwise Energy Consumption</p>
+            </div>
+
+
+            <div class="donut" >
+              <div class="title">
+                <h4>Sessionwise Energy Consumption (Groupwise)</h4>
+              </div>
+
+              <app-loader *ngIf="groupLoad == true && this.form.valid" class="grpdivloader"></app-loader>
+
+              <apx-chart id="chart" #chart2 *ngIf="groupLoad !== true && this.form.valid"
+                [series]="barGrpchart.series"
+                [chart]="barGrpchart.chart"
+                [colors]="barGrpchart.colors"
+                [legend]="barGrpchart.legend"
+                [subtitle]="barGrpchart.title"
+                [dataLabels]="barGrpchart.dataLabels"
+                [plotOptions]="barGrpchart.plotOptions"
+                [tooltip]="barGrpchart.tooltip"
+                [grid]="barGrpchart.grid"
+                [xaxis]="barGrpchart.xaxis"
+                [yaxis]="barGrpchart.yaxis"
+              ></apx-chart>
+              <p class="hint"><span>*</span>Click on the bar to visualize the Meterwise Energy Consumption</p>
+            </div>
+
+          </div>
+
+          <div class="linechart botchart">
+            <div class="title">
+              <h4>Sessionwise Energy Consumption (Meterwise)</h4>
+            </div>
+
+            <app-loader *ngIf="meterLoad == true && this.form.valid" class="grpdivloader"></app-loader>
+
+            <apx-chart id="chart" #chart3 *ngIf="meterLoad !== true && this.form.valid"
+              [series]="SrcbarChart.series"
+              [chart]="SrcbarChart.chart"
+              [dataLabels]="SrcbarChart.dataLabels"
+              [plotOptions]="SrcbarChart.plotOptions"
+              [yaxis]="SrcbarChart.yaxis"
+              [xaxis]="SrcbarChart.xaxis"
+              [legend]="SrcbarChart.legend"
+              [colors]="SrcbarChart.colors"
+              [grid]="SrcbarChart.grid"
+              [subtitle]="SrcbarChart.title"
+              [tooltip]="SrcbarChart.tooltip"
+            ></apx-chart>
+          </div>
+
+        </div>
+
+    </p-tabPanel>
+
+    <!-- PEAK & OFF PEAK -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="peakO"></fa-icon>
+          <span>PEAK OFF-PEAK</span>
+        </div>
+      </ng-template>
+
+      <app-peak-off></app-peak-off>
+
+    </p-tabPanel>
+
+  </p-tabView>
+
+
+
+
+</div>
+

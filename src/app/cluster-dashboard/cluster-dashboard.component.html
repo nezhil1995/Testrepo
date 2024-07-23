@@ -1,0 +1,357 @@
+<body>
+
+  <app-maskloader *ngIf="maskload"></app-maskloader>
+
+  <app-loader *ngIf="load == true"></app-loader>
+
+  <div class="cluster_card" *ngIf="load != true">
+    <div class="blur_back back_img"></div>
+    <div class="info_section">
+
+      <div class="plantinfo1">
+        <h2>Welcome {{Username}} </h2>
+      </div>
+  
+      <div class="plantinfo2">
+        <h3>OVERALL</h3>
+        <div class="overall"> 
+          <div>
+          <table>
+            <thead>
+              <tr>
+                <td colspan="3" id="tdCarbon"><fa-icon [icon]="car" [animation]="'flip'"></fa-icon> CARBON EMISSION</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="tr">
+                <td>This Year :</td>
+                <td style="text-align: right;">{{this.ovarallTotal().CarbonThisYear.toLocaleString()}}</td>
+                <td style="padding-top: 0.2rem;">Kg CO<sub>2</sub>e</td>
+              </tr>
+              <tr id="tr">
+                <td>Last Year :</td>
+                <td style="text-align: right;">{{this.ovarallTotal().CarbonLastYear.toLocaleString()}}</td>
+                <td style="padding-top: 0.2rem;">Kg CO<sub>2</sub>e</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="verline"></div>
+          <div>
+          <table>
+            <thead>
+              <tr>
+                <td colspan="4" id="tdEnergy"><fa-icon [icon]="eng" [animation]="'shake'"></fa-icon> ENERGY CONSUMPTION & COST</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="treng">
+                <td>This Month :</td>
+                <td style="text-align: right;">{{this.ovarallTotal().ThisMonth.toLocaleString()}}</td>
+                <td>kWh</td>
+                <td style="text-align: right;">₹ {{this.ovarallTotal().CostThisMonth.toLocaleString()}}</td>
+              </tr>
+              <tr id="treng">
+                <td>Last Month :</td>
+                <td style="text-align: right;">{{this.ovarallTotal().LastMonth.toLocaleString()}}</td>
+                <td>kWh</td>
+                <td style="text-align: right;">₹ {{this.ovarallTotal().CostLastMonth.toLocaleString()}}</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="load != true">
+
+    <div class="topbtn">
+      <form [formGroup]="form" joyrideStep="first" [stepContent]="switchContent" title="View">
+        <p-selectButton [options]="stateOptionsEms" formControlName="value" [(ngModel)]="value" optionLabel="label" optionValue="value">
+          <ng-template let-item>
+            <div class="btnLable">
+              <i [class]="item.icon"></i>
+              <p>{{ item.label }}</p>
+            </div>
+          </ng-template>
+        </p-selectButton>
+      </form>
+    </div>
+
+    <!-- CARD VIEW -->
+    <div class="container" *ngIf="this.form.get('value')?.value === 'card'">
+      <ng-container *ngFor="let data of cluData let i = index">
+        <div class="card">
+
+          <div class="forwordto" (click)="OpenPlantDashboard(data.plantname, data.plantlocation)"><fa-icon joyrideStep="step{{i}}" [stepContent]="customContent" title="Navigate" [icon]="arrow"></fa-icon></div>
+
+          <div class="plant-details">
+            <h4 style="color: #da2020;"><i class="fi fi-ss-industry-windows"></i> {{data.plantname}}</h4>
+            <h4><i class="fi fi-ss-marker" id="loc"></i> {{data.plantlocation}}</h4>
+          </div>
+
+          <div class="more_header">
+            <h4 style="color: blue;"><fa-icon [icon]="eng" [animation]="'shake'"></fa-icon> Energy Consumption</h4>
+            <h4 style="color: green;"><fa-icon [icon]="car" [animation]="'flip'"></fa-icon> Carbon Emission</h4>
+          </div>
+          
+          <div class="more_details">
+            <!-- Energy Consumption -->
+            <div style="padding-top: 1.8rem;">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Today</td>
+                    <td style="text-align: right;">{{data.EnergyManagement.EnrTotToday.toLocaleString()}}</td>
+                    <td>kWh</td>
+                    <td>₹ {{data.cost.TotTodayCost.toLocaleString()}}</td>
+                  </tr>
+                  <tr>
+                    <td>This Month</td>
+                    <td style="text-align: right;">{{data.EnergyManagement.EnrTotThisMonth.toLocaleString()}}</td>
+                    <td>kWh</td>
+                    <td>₹ {{data.cost.ThisMonthCost.toLocaleString()}}</td>
+                  </tr>
+                  <tr>
+                    <td>Last Month</td>
+                    <td style="text-align: right;">{{data.EnergyManagement.EnrTotLastMonth.toLocaleString()}}</td>
+                    <td>kWh</td>
+                    <td>₹ {{data.cost.LastMonthCost.toLocaleString()}}</td>
+                  </tr>
+                  <tr>
+                    <td>This Year</td>
+                    <td style="text-align: right;">{{data.EnergyManagement.EnrTotThisYear.toLocaleString()}}</td>
+                    <td>kWh</td>
+                    <td>₹ {{data.cost.ThisYearCost.toLocaleString()}}</td>
+                  </tr>
+                  <tr>
+                    <td>Last Year</td>
+                    <td style="text-align: right;">{{data.EnergyManagement.EnrTotLastYear.toLocaleString()}}</td>
+                    <td>kWh</td>
+                    <td>₹ {{data.cost.LastYearCost.toLocaleString()}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="line"></div>
+
+            <!-- Carbon Emission --> 
+            <div style="padding-bottom: 1.7rem; margin-top: -0.5rem;">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Total Emission</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoTotThisMonth.toLocaleString()}}</td>
+                    <td>Kg CO<sub>2</sub>e</td>
+                  </tr>
+                  <tr>
+                    <td>Scope 1</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoS1.toLocaleString()}}</td>
+                    <td>Kg CO<sub>2</sub>e</td>
+                  </tr>
+                  <tr>
+                    <td>Scope 2</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoS2.toLocaleString()}}</td>
+                    <td>Kg CO<sub>2</sub>e</td>
+                  </tr>
+                  <tr>
+                    <td>Scope 3</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoS3.toLocaleString()}}</td>
+                    <td >Kg CO<sub>2</sub>e</td>
+                  </tr>
+                  <tr>
+                    <td>This Year</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoThisYear.toLocaleString()}}</td>
+                    <td>Kg CO<sub>2</sub>e</td>
+                    <td [ngStyle]="getCellStyle(data.CorbonEmission.CoThisYear, data.CorbonEmission.CoLastYear)">
+                      <i class="fi" [ngClass]="{'fi-bs-arrow-trend-down': CarbonPercentage(data.CorbonEmission.CoThisYear, data.CorbonEmission.CoLastYear) <= 100, 'fi-bs-arrow-trend-up': CarbonPercentage(data.CorbonEmission.CoThisYear, data.CorbonEmission.CoLastYear) > 100 }"></i>
+                      {{ CarbonPercentage(data.CorbonEmission.CoThisYear, data.CorbonEmission.CoLastYear).toFixed(2) }}%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Last Year</td>
+                    <td style="text-align: right;">{{data.CorbonEmission.CoLastYear.toLocaleString()}}</td>
+                    <td>Kg CO<sub>2</sub>e</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- CHART VIEW -->
+    <ng-container *ngIf="this.form.get('value')?.value === 'chart'">
+
+      <div class="chart-container">
+
+        <div class="kvachart">
+
+          <form [formGroup]="peakOffpeakform" class="form">
+            <div class="control" >
+              <label>Select type</label>
+              <select formControlName="type" [(ngModel)]="this.defaultType">
+                <option value="">-- None --</option>
+                <option value="Date basis">Date Basis</option>
+                <option value="Month basis">Month Basis</option>
+              </select>
+            </div>
+
+            <div class="control" *ngIf="this.peakOffpeakform.controls['type']?.value === 'Month basis'">
+              <label>Select Month</label>
+              <p-calendar appendTo="body" formControlName="date" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="popmaxdate"
+              (onSelect)="PeakOffpeakGetData($event, 'Month')"
+              [(ngModel)]="peakoffpeakDate"
+              [style]="{ width: '195px'}"
+              >
+              </p-calendar>
+            </div>
+
+            <div class="control" *ngIf="this.peakOffpeakform.controls['type']?.value === 'Date basis'">
+              <label>Select Date</label>
+              <p-calendar appendTo="body" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="popmaxdate"
+              (onSelect)="PeakOffpeakGetData($event, 'Date')"
+              [(ngModel)]="peakoffpeakDate"
+              [style]="{ width: '195px'}"
+              >
+              </p-calendar>
+            </div>
+
+          </form>
+
+          <app-loader *ngIf="this.peakLoad === true" id="secdivloader"></app-loader>
+
+          <apx-chart id="chart" *ngIf="this.peakLoad !== true && this.peakOffpeakform.valid"
+          #chart1
+          [series]="peakOffpeakchartOptions.series"
+          [chart]="peakOffpeakchartOptions.chart"
+          [dataLabels]="peakOffpeakchartOptions.dataLabels"
+          [plotOptions]="peakOffpeakchartOptions.plotOptions"
+          [yaxis]="peakOffpeakchartOptions.yaxis"
+          [xaxis]="peakOffpeakchartOptions.xaxis"
+          [legend]="peakOffpeakchartOptions.legend"
+          [colors]="peakOffpeakchartOptions.colors"
+          [grid]="peakOffpeakchartOptions.grid"
+          [tooltip]="peakOffpeakchartOptions.tooltip"
+          [title]="peakOffpeakchartOptions.title"
+         ></apx-chart>
+
+        </div>
+        
+      </div>
+
+      <div class="secchart">
+        <form [formGroup]="secform" class="form">
+          <h5>SELECT YEAR</h5>
+          <div class="control">
+            <p-calendar appendTo="body" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [maxDate]="maxDate"
+            (onSelect)="GetYearSECData($event)"
+            [(ngModel)]="defaultDate"
+            [style]="{ width: '195px'}"
+            >
+            </p-calendar>
+          </div>
+        </form>
+
+        <app-loader *ngIf="this.SecLoad === true" id="secdivloader"></app-loader>
+
+        <highcharts-chart 
+        *ngIf="this.SecLoad !== true && this.secform.valid"
+        [Highcharts]="Highcharts"
+        constructorType="chart"
+        [options]="secChartOptions"
+        id="chart"
+        ></highcharts-chart>
+      </div>
+
+      <div class="chart1 new">
+        <div class="title">
+          <h4>PLANTS ENERGY CONSUMPTION</h4>
+        </div>
+          <apx-chart id="chart"
+          #chart1
+          [series]="EnrchartOptions.series"
+          [chart]="EnrchartOptions.chart"
+          [dataLabels]="EnrchartOptions.dataLabels"
+          [plotOptions]="EnrchartOptions.plotOptions"
+          [yaxis]="EnrchartOptions.yaxis"
+          [xaxis]="EnrchartOptions.xaxis"
+          [legend]="EnrchartOptions.legend"
+          [colors]="EnrchartOptions.colors"
+          [grid]="EnrchartOptions.grid"
+          [theme]="EnrchartOptions.theme"
+          [tooltip]="EnrchartOptions.tooltip"
+        ></apx-chart>
+      </div>
+
+      <div class="chart1 new">
+        <div class="title">
+          <h4>PLANTS COST DATA</h4>
+        </div>
+          <apx-chart id="chart"
+          #chart1
+          [series]="EnrCostchartOptions.series"
+          [chart]="EnrCostchartOptions.chart"
+          [dataLabels]="EnrCostchartOptions.dataLabels"
+          [plotOptions]="EnrCostchartOptions.plotOptions"
+          [yaxis]="EnrCostchartOptions.yaxis"
+          [xaxis]="EnrCostchartOptions.xaxis"
+          [legend]="EnrCostchartOptions.legend"
+          [colors]="EnrCostchartOptions.colors"
+          [grid]="EnrCostchartOptions.grid"
+          [theme]="EnrCostchartOptions.theme"
+          [tooltip]="EnrCostchartOptions.tooltip"
+        ></apx-chart>
+      </div>
+
+      <div class="carbonchart new">
+        <div class="title">
+          <h4>PLANTS CARBON EMISSION</h4>
+        </div>
+          <apx-chart id="chart"
+          #chart1
+          [series]="CarbonChart.series"
+          [chart]="CarbonChart.chart"
+          [dataLabels]="CarbonChart.dataLabels"
+          [plotOptions]="CarbonChart.plotOptions"
+          [yaxis]="CarbonChart.yaxis"
+          [xaxis]="CarbonChart.xaxis"
+          [legend]="CarbonChart.legend"
+          [colors]="CarbonChart.colors"
+          [grid]="CarbonChart.grid"
+          [theme]="CarbonChart.theme"
+          [tooltip]="CarbonChart.tooltip"
+        ></apx-chart>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+  <ng-template #customContent>
+    <div style="height: 20px; margin-top: -1.3rem;">
+      <h5>This arrow will navigate you to the selected plant dashboard</h5>
+    </div>
+  </ng-template>
+
+  <ng-template #switchContent>
+    <div style="height: 20px; margin-top: -1.3rem;">
+      <h5>Click here to change the view</h5>
+    </div>
+  </ng-template>
+
+</body>

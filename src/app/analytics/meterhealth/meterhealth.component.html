@@ -1,0 +1,67 @@
+<div class="body">
+
+  <app-under-maintenance *ngIf="false"></app-under-maintenance>
+
+  <div class="drop">
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Date</label>
+        <input type="date" formControlName="date" placeholder="Enter" [max]="date5" required>
+        <div *ngIf="form.get('date')?.invalid && (form.get('date')?.dirty || form.get('date')?.touched)" class="error">
+          <div *ngIf="form.get('date')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+      <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">GET DATA</button>
+    </form>
+
+  </div>
+
+  <app-loader *ngIf="load == true && this.form.valid && vis" class="divloader"></app-loader>
+  
+  <!-- <div class="mapchart" *ngIf="load != true && this.TableData && this.form.valid">
+
+    <apx-chart id="chart"
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [dataLabels]="chartOptions.dataLabels"
+    [plotOptions]="chartOptions.plotOptions"
+    [xaxis]="chartOptions.xaxis"
+    [yaxis]="chartOptions.yaxis"
+    [tooltip]="chartOptions.tooltip"
+    [title]="chartOptions.title"
+  ></apx-chart>
+
+  </div> -->
+
+
+
+  <div class="" *ngIf="load != true && this.TableData && this.form.valid">
+    <div class="title">
+      <h4>METER CONNECTIVITY REPORT ON {{titleDate}}</h4>
+      <button class="button expData" [disabled]="form.invalid" (click)="exportImg()"><fa-icon [icon]="meter" [size]="'lg'"></fa-icon>DOWNLOAD</button>
+    </div>
+
+    <div class="wrap" >
+      <div class="tabl" >
+      <table #tableContainer id="tableContainer">
+       <thead>
+           <td class="tbtx1" >MeterNames</td>
+           <td class="tbtx" *ngFor="let i of this.TableData.date">{{i | slice:0:-3 }}</td>
+       </thead>
+       <tbody>
+         <tr  *ngFor="let i of TableData.status" >
+           <td style="height: 20px; width: 30px; font-size: 12px;"> {{i.metername}}</td>
+           <td *ngFor="let data of i.health" style="height: 20px;" [ngStyle]="{'background-color': (data==1) ? '#3EC70B' : '#da2020'}"></td>
+         </tr>
+       </tbody>
+       </table>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

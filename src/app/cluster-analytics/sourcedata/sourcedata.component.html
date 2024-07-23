@@ -1,0 +1,87 @@
+<div class="divbody">
+
+  <app-loader *ngIf="load == true"></app-loader>
+
+  <div *ngIf="load != true">
+
+    <form class="form" [formGroup]="form">
+
+      <div class="control">
+        <label>Select Source</label>
+        <select formControlName="source" [(ngModel)]="DefaultSource" (change)="OnchangeSrc()">
+          <option value="">-- Select --</option>
+          <option *ngFor="let src of SourceData" [value]="src">
+            {{ src }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="control">
+        <label>Select Type</label>
+        <select formControlName="type"  [(ngModel)]="defaultType">
+          <option value="">-- Select --</option>
+          <option value="Month Basis">Month Basis</option>
+          <option value="Year Basis">Year Basis</option>
+        </select>
+      </div>
+
+      <div class="control" *ngIf="this.form.get('type')?.value === 'Month Basis'">
+        <label>Select Month</label>
+        <p-calendar appendTo="body" formControlName="commondate" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="monthmaxDate"
+        (onSelect)="GetChartData($event, 'month')"
+        [(ngModel)]="dafualtDate"
+        [style]="{ width: '195px'}"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="control" *ngIf="this.form.get('type')?.value === 'Year Basis'">
+        <label>Select Year</label>
+        <p-calendar appendTo="body" formControlName="commondate" view="year" dateFormat="yy" [readonlyInput]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [maxDate]="yearmaxdate"
+        (onSelect)="GetChartData($event, 'year')"
+        [(ngModel)]="dafualtDate"
+        [style]="{ width: '195px'}"
+        >
+        </p-calendar>
+      </div>
+
+    </form>
+
+    <app-loader id="divloader" *ngIf="this.chartLoad == true && this.form.valid"></app-loader>
+
+    <div class="title" *ngIf="this.chartLoad != true && this.form.valid">
+      <h4>{{Chartitle}}</h4>
+    </div>
+
+    <ng-container *ngFor="let chart of this.ChartData let i = index">
+
+      <div class="chartdiv" *ngIf="this.chartLoad != true && this.form.valid">
+        <apx-chart id="chart"
+        [series]="getChartOptionsData(i).series"
+        [chart]="getChartOptionsData(i).chart"
+        [xaxis]="getChartOptionsData(i).xaxis"
+        [stroke]="getChartOptionsData(i).stroke"
+        [dataLabels]="getChartOptionsData(i).dataLabels"
+        [yaxis]="getChartOptionsData(i).yaxis"
+        [labels]="getChartOptionsData(i).labels"
+        [legend]="getChartOptionsData(i).legend"
+        [title]="getChartOptionsData(i).title"
+        [subtitle]="getChartOptionsData(i).subtitle"
+        [plotOptions]="getChartOptionsData(i).plotOptions"
+        [fill]="getChartOptionsData(i).fill"
+        [tooltip]="getChartOptionsData(i).tooltip"
+      ></apx-chart>
+      </div>
+
+    </ng-container>
+    
+
+  </div>
+
+</div>

@@ -1,0 +1,127 @@
+<body>
+
+  <app-maskloader *ngIf="this.maskLoad" ></app-maskloader>
+
+  <!-- <div class="image-column">
+    <div class="head">
+      <img src="../../assets/logo.png" height="45px"> <h3>R-ENERGY</h3>
+    </div>
+  </div>
+
+
+  <div class="form-column">
+
+      <div class="form login">
+        <div class="form-content">
+            <header>LOGIN</header>
+
+            <form [formGroup]="form" (ngSubmit)="login()">
+
+              <div class="field input-field">
+                <input type="email" formControlName="email" placeholder="Email" required>
+                <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)" class="error">
+                  {{ form.get('email')?.hasError('required') ? '*Email is required' : 'Email is invalid' }}
+                </div>
+              </div>
+
+              <div class="field input-field">
+                <input style="-webkit-text-security: disk;" [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password" required>
+                <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)" class="error">
+                  <div *ngIf="form.get('password')?.errors!required">
+                    *Password required
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="form-link">
+                  <a class="forgot-pass">Forgot password?</a>
+              </div>
+
+              <div class="btnfielf button-field">
+                <button type="submit" [disabled]="this.form.invalid">
+                  <div class="svg-wrapper-1">
+                    <div class="svg-wrapper">
+                      <fa-icon class="svg" [icon]="log"></fa-icon>
+                    </div>
+                  </div>
+                  <span>LOGIN</span>
+                </button>
+              </div>
+          </form>
+        </div>
+        </div>
+    </div> -->
+  <!-- <p-toast></p-toast> -->
+
+  <div id="header">
+    <img src="../../favicon.ico" height="25px" width="25px">
+    <h3>R-ENERGY</h3>
+  </div>
+
+  <div class="login-box">
+    <div class="login-box-formbox">
+      <div class="login-box-login">
+        <h1 style="width: 100%; text-align: center;">Welcome</h1>
+        <form  [formGroup]="form" (ngSubmit)="login()">
+          <div>
+            <label for="email"> E-Mail</label>
+            <input type="email" name="email" formControlName="email" class="input-email" />
+            <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)" class="error">
+              {{ form.get('email')?.hasError('required') ? '*Email is required' : 'Email is invalid' }}
+            </div>
+          </div>
+          <div>
+            <label for="password"> Password</label>
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" name="password" class="input-password" />
+            <fa-icon class="eye" [icon]="showPassword ? eyeCls : eye" (click)="togglePasswordVisibility()"></fa-icon>
+            <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)" class="error">
+              <div *ngIf="form.get('password')?.errors!required">
+                *Password required
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="plantname">Select Plant</label>
+            <select formControlName="plantname">
+              <option value="">-- Select --</option>
+              <option *ngFor="let meter of plants" [value]="meter.plantname">
+                {{ meter.plantname }}
+              </option>
+            </select>
+            <div *ngIf="form.get('plantname')?.invalid && (form.get('plantname')?.dirty || form.get('plantname')?.touched)" class="error">
+              <div *ngIf="form.get('plantname')?.errors!required">
+                *Plantname required
+              </div>
+            </div>
+          </div>
+
+          <div style="width: 100%; display: flex; justify-content: center;">
+            <div class="button-field">
+              <button type="submit" [disabled]="this.form.invalid">
+                <div class="svg-wrapper-1">
+                  <div class="svg-wrapper">
+                    <fa-icon class="svg" [icon]="log"></fa-icon>
+                  </div>
+                </div>
+                <span>LOGIN</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- <div class="alternate-text"><p style="cursor: pointer;">FORGOT PASSWORD</p></div> -->
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="imgtag">
+    <img id="img" src="../../assets/enhancelogbg.png">
+    <div id="typing">
+      REnergy -&nbsp;<span #textElement></span><span class="blinker-m"><i class="fi fi-ss-bolt"></i></span>
+    </div>
+  </div>
+  
+
+</body>

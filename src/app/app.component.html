@@ -1,0 +1,29 @@
+<app-navbar *ngIf="getRouter().url !== '/' "></app-navbar>
+<app-sidebar *ngIf="getRouter().url !== '/' "></app-sidebar>
+
+<div id="backbtn" *ngIf="getRouter().url !== '/' && showOnlyfor()" joyrideStep="first" [stepContent]="backContent" title="Go Back">
+  <button class="button" (click)="backAuth()"><i class="fi fi-br-left"></i> BACK </button>
+</div>
+
+<app-pre-loader *ngIf="load===true"></app-pre-loader>
+
+<app-maskloader *ngIf="maskLoad===true"></app-maskloader>
+
+<router-outlet></router-outlet>
+
+<p-scrollTop>
+  <ng-template pTemplate="icon">
+    <i class="fi fi-sr-arrow-small-up"></i>
+  </ng-template>
+</p-scrollTop>
+
+<app-footer *ngIf="getRouter().url !== '/' "></app-footer>
+
+<p-toast></p-toast>
+<p-confirmDialog [closable]="false" [style]="{ width: 'auto', height: 'auto', textalign: 'center' }"></p-confirmDialog>
+
+<ng-template #backContent>
+  <div style="height: 20px; margin-top: -1.3rem;">
+    <h5>Click here to previous page</h5>
+  </div>
+</ng-template>

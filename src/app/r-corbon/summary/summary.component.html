@@ -1,0 +1,117 @@
+<div class="table">
+
+  <div class="tabletop btls">
+
+    <div class="add">
+
+      <form [formGroup]="formType">
+
+        <div class="control">
+          <select formControlName="selectedType" [(ngModel)]="DefaultType">
+            <option value="">-- Select --</option>
+            <option *ngFor="let select of seleter" [value]="select">
+              {{ select }}
+            </option>
+          </select>
+        </div>
+
+      </form>
+
+      <form [formGroup]="formMonth" *ngIf="this.formType.get('selectedType')?.value === 'Month Basis' && this.formType.valid">
+
+        <h4 style="font-size: 14px;">SELECT MONTH</h4>
+        <div class="control">
+          <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [maxDate]="maxDate"
+            (onSelect)="GetMonthTableData($event)"
+            >
+          </p-calendar>
+  
+        </div>
+
+      </form>
+
+      <form [formGroup]="formYear" *ngIf="this.formType.get('selectedType')?.value === 'Year Basis' && this.formType.valid">
+
+        <h4 style="font-size: 14px;">SELECT YEAR</h4>
+        <div class="control">
+          <p-calendar appendTo="body" [(ngModel)]="date" formControlName="selectYear" view="year" dateFormat="yy" [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          (onSelect)="GetYearTableData($event)"
+          >
+          </p-calendar>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="delete">
+      <button class="button ok" (click)="newExcelReport()" [disabled]="!(load !== true && this.formType.valid && this.CarbonData && this.tablevisible)">EXPORT<fa-icon [icon]="file" [size]="'lg'"></fa-icon></button>
+    </div>
+
+  </div>
+
+  <div *ngIf="load === true && this.formType.valid && !this.tablevisible" class="divloader">
+    <div class="dot-spinner">
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+      <div class="dot-spinner__dot"></div>
+    </div>
+  </div>
+
+  <p-table *ngIf="load !== true && this.formType.valid && this.CarbonData && this.tablevisible" id='dt' [value]="CarbonData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+  [paginator]="false"
+  [rows]="10"
+  [rowsPerPageOptions]="[10,25,50]"
+  class="custom-table"
+  [scrollable]="true"
+  >
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="tableHeadrr" colspan="8">{{UnitName}} {{Location}} - CARBON EMISSION FOR THE {{BaseString}} {{month}} </th>
+    </tr>
+    <tr>
+      <th>S.NO</th>
+      <th pSortableColumn="description">DESCRIPTION <p-sortIcon field="description"></p-sortIcon></th>
+      <th pSortableColumn="units">UNITS <p-sortIcon field="units"></p-sortIcon></th>
+      <th pSortableColumn="month">TOTAL CONSUMPTION<p-sortIcon field="month"></p-sortIcon></th>
+      <th pSortableColumn="ghg">NAME OF GHG <p-sortIcon field="ghg"></p-sortIcon></th>
+      <th pSortableColumn="Namghg">GHG CO₂<p-sortIcon field="Namghg"></p-sortIcon></th>
+      <th pSortableColumn="unitcon">UNITS<p-sortIcon field="unitcon"></p-sortIcon></th>
+      <th pSortableColumn="emission">EMISSION<p-sortIcon field="emission"></p-sortIcon></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-Rcarbon let-rowIndex="rowIndex">
+    <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td class="custom-table-cell" [ngClass]="{'ellipsis': Rcarbon.description.length >= 20}" [pTooltip]="Rcarbon.description" tooltipPosition="top" [tooltipDisabled]="!(Rcarbon.description.length >= 20)">
+          {{Rcarbon.description}}
+        </td>
+        <td>{{Rcarbon.units}}</td>
+        <td>{{Rcarbon.consumption}}</td>
+        <td>{{Rcarbon.ghg}}</td>
+        <td>{{Rcarbon.Namghg}}</td>
+        <td>{{Rcarbon.unitcon}}</td>
+        <td>{{(Rcarbon.emission).toLocaleString()}} Kg CO<sub>2</sub> e</td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="footer">
+  <tr class="footertab">
+    <td class="footd" colspan="7">Total Emission</td>
+    <td class="footd">{{total.toLocaleString()}} Kg CO<sub>2</sub> e</td>
+  </tr>
+</ng-template>
+</p-table>
+
+</div>

@@ -1,0 +1,78 @@
+
+<div class="body">
+
+  <div class="drop">
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">Select Date</label>
+        <p-calendar (onSelect)="onDateRangeSelect()" dataType="date" appendTo="body" #calendar placeholder="Select Date Range" formControlName="dateRange" [(ngModel)]="rangeDates" dateFormat="dd/mm/yy" [showButtonBar]="false" selectionMode="range" [maxDate]="maxDate" [readonlyInput]="true"></p-calendar>
+        <div *ngIf="form.get('type')?.invalid && (form.get('type')?.dirty || form.get('type')?.touched)" class="error">
+          <div *ngIf="form.get('type')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <app-loader *ngIf="load == true && this.form.valid && vis" class="divloader"></app-loader>
+
+  <div class="linechart" *ngIf="load != true && this.ChartData && this.form.valid">
+    <div class="title">
+      <h4>Maximum KVA Utilization for {{this.DynamicUnitForHeader(this.form.get('type')?.value)}}</h4>
+    </div>
+
+    <apx-chart id="chart"
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [xaxis]="chartOptions.xaxis"
+      [legend]="chartOptions.legend"
+      [colors]="chartOptions.colors"
+      [grid]="chartOptions.grid"
+      [tooltip]="chartOptions.tooltip"
+      [stroke]="chartOptions.stroke"
+    ></apx-chart>
+
+  </div>
+
+  <div class="linechart" *ngIf="load != true && this.ChartData && this.form.valid">
+    
+    <div class="form-title">
+      <h4>Energy Utilization for</h4>
+      <form [formGroup]="SrcForm"  class="form">
+        <div class="form-control">
+          <label for="name">Select</label>
+          <select formControlName="name" (change)="onSrcChange($any($event.target).value)" [(ngModel)]="DefaultSrc">
+            <option value="">-- Select Source --</option>
+            <option *ngFor="let meter of SrcvalueDrop" [value]="meter">
+              {{ meter }}
+            </option>
+          </select>
+        </div>
+      </form>
+      
+    </div>
+
+    <apx-chart id="chart"
+      [series]="EnrChartOptions.series"
+      [chart]="EnrChartOptions.chart"
+      [dataLabels]="EnrChartOptions.dataLabels"
+      [plotOptions]="EnrChartOptions.plotOptions"
+      [yaxis]="EnrChartOptions.yaxis"
+      [xaxis]="EnrChartOptions.xaxis"
+      [legend]="EnrChartOptions.legend"
+      [colors]="EnrChartOptions.colors"
+      [grid]="EnrChartOptions.grid"
+      [tooltip]="EnrChartOptions.tooltip"
+      [stroke]="EnrChartOptions.stroke"
+    ></apx-chart>
+
+  </div>
+
+</div>

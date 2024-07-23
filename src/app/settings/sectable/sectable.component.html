@@ -1,0 +1,244 @@
+<body>
+
+  <p-tabView [scrollable]="true">
+
+    <!-- ====================================== IMM SEC ============================= -->
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="plug"></fa-icon>
+          <span>IMM SEC</span>
+        </div>
+      </ng-template>
+  
+      <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+      <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+      <div *ngIf="load != true">
+        <div class="table">
+          <div class="tabletop">
+
+            <div class="search">
+              <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt4.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+              </span>
+
+              <form [formGroup]="MonthSECform">
+                <div class="control">
+                  <label>Select Month</label>
+                  <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+                    [monthNavigator]="true"
+                    [yearNavigator]="true"
+                    [maxDate]="maxDate"
+                    (onSelect)="GetMonthSECData($event)"
+                    >
+                  </p-calendar>
+                </div>
+              </form>
+            </div>
+
+          </div>
+          <p-table #dt4 id=secexptab [value]="SecData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+            [(selection)]="selected"
+            [paginator]="true"
+            [rows]="50"
+            [rowsPerPageOptions]="[50,100,500,1000,2000]"
+            [loading]="loading"
+            [globalFilterFields]="['sec_date', 'sec_energy', 'sec_material', 'sec_value']"
+            class="custom-table"
+            [scrollable]="true"
+            [scrollHeight]="TableHeight"
+            >
+            <ng-template pTemplate="header">
+              <tr>
+                  <th pSortableColumn="sec_date">DATE<p-sortIcon field="sec_date"></p-sortIcon></th>
+                  <th pSortableColumn="sec_energy"> ENERGY CONSUMED (kWh)<p-sortIcon field="sec_energy"></p-sortIcon></th>
+                  <th pSortableColumn="sec_material"> MATERIAL CONSUMED (kg) <p-sortIcon field="sec_material"></p-sortIcon></th>
+                  <th pSortableColumn="sec_value"># SEC <p-sortIcon field="sec_value"></p-sortIcon></th>
+                  <th *ngIf="loginType">EDIT</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-Sectab>
+              <tr>
+                  <td>{{Sectab.sec_date}}</td>
+                  <td>{{Sectab.sec_energy}}</td>
+                  <td>{{Sectab.sec_material}}</td>
+                  <td>{{Sectab.sec_value}}</td>
+                  <td *ngIf="loginType">
+                    <button *ngIf="Sectab.sec_conform" class="edtBtn" role="button" (click)="EditModal(Sectab)" ><fa-icon [icon]="edit" ></fa-icon></button>
+                    <button *ngIf="!Sectab.sec_conform" class="addBtn" role="button" (click)="showModal(Sectab)" ><fa-icon [icon]="add" ></fa-icon></button>
+                  </td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-Data>
+            <tr>
+              <td class="footd" colspan="5">No Data Available</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="paginatorright">
+            <button class="Btn" (click)="exportExcel()">
+              <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+              <div class="text">EXPORT</div>
+            </button>        
+          </ng-template>
+          </p-table>
+        </div>
+      </div>
+      
+    </p-tabPanel>
+
+    <!-- ====================================== PAINTSHOP SEC ============================= -->
+    <!-- <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tabview">
+          <fa-icon [icon]="paint"></fa-icon>
+          <span>PAINTSHOP SEC</span>
+        </div>
+      </ng-template>
+  
+      <app-loader *ngIf="psload == true" class="divloader"></app-loader>
+
+      <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+      <div *ngIf="psload != true">
+        <div class="table">
+          <div class="tabletop">
+
+            <div class="search">
+              <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt5.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+              </span>
+
+              <form [formGroup]="PsMonthSECform">
+                <div class="control">
+                  <label>Select Month</label>
+                  <p-calendar appendTo="body" [(ngModel)]="psDefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+                    [monthNavigator]="true"
+                    [yearNavigator]="true"
+                    [maxDate]="maxDate"
+                    (onSelect)="PsGetMonthSECData($event)"
+                    >
+                  </p-calendar>
+                </div>
+              </form>
+            </div>
+
+          </div>
+          <p-table #dt5 id=secexptab [value]="PsSecData" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+            [(selection)]="selected"
+            [paginator]="true"
+            [rows]="50"
+            [rowsPerPageOptions]="[50,100,500,1000,2000]"
+            [loading]="loading"
+            [globalFilterFields]="['sec_date', 'sec_energy', 'sec_material', 'sec_value']"
+            class="custom-table"
+            [scrollable]="true"
+            [scrollHeight]="TableHeight"
+            >
+            <ng-template pTemplate="header">
+              <tr>
+                  <th pSortableColumn="sec_date">DATE<p-sortIcon field="sec_date"></p-sortIcon></th>
+                  <th pSortableColumn="sec_energy"> ENERGY CONSUMED (kWh)<p-sortIcon field="sec_energy"></p-sortIcon></th>
+                  <th pSortableColumn="sec_material">PAINT LITERS <p-sortIcon field="sec_material"></p-sortIcon></th>
+                  <th pSortableColumn="sec_value"># SEC <p-sortIcon field="sec_value"></p-sortIcon></th>
+                  <th *ngIf="loginType">EDIT</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-PsSecData>
+              <tr>
+                  <td>{{PsSecData.sec_date}}</td>
+                  <td>{{PsSecData.sec_energy}}</td>
+                  <td>{{PsSecData.sec_material}}</td>
+                  <td>{{PsSecData.sec_value}}</td>
+                  <td *ngIf="loginType">
+                    <button *ngIf="PsSecData.sec_conform" class="edtBtn" role="button" (click)="PsEditModal(PsSecData)" ><fa-icon [icon]="edit" ></fa-icon></button>
+                    <button *ngIf="!PsSecData.sec_conform" class="addBtn" role="button" (click)="PsshowModal(PsSecData)" ><fa-icon [icon]="add" ></fa-icon></button>
+                  </td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-Data>
+            <tr>
+              <td class="footd" colspan="5">No Data Available</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="paginatorright">
+            <button class="Btn" (click)="exportExcel()">
+              <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+              <div class="text">EXPORT</div>
+            </button>        
+          </ng-template>
+          </p-table>
+        </div>
+      </div>
+  
+    </p-tabPanel> -->
+
+  </p-tabView>
+
+
+</body>
+
+
+<p-dialog [(visible)]="DisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="form"  class="form">
+
+      <div class="form-control">
+        <label for="name">SEC MATERIAL VALUE</label>
+        <input type="number" formControlName="sec_material" placeholder="Enter" required>
+        <div *ngIf="form.get('sec_material')?.invalid && (form.get('sec_material')?.dirty || form.get('sec_material')?.touched)" class="error">
+          <div *ngIf="form.get('sec_material')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="closeModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="PsDisplayModal" [draggable]="false" [closable]="false" [modal]="true">
+
+  <div class="formdiv">
+
+    <form [formGroup]="Psform" class="form">
+
+      <div class="form-control">
+        <label for="name">PAINT CONSUMED (in Liters)</label>
+        <input type="number" formControlName="sec_material" placeholder="Enter" required>
+        <div *ngIf="Psform.get('sec_material')?.invalid && (Psform.get('sec_material')?.dirty || Psform.get('sec_material')?.touched)" class="error">
+          <div *ngIf="Psform.get('sec_material')?.errors!required">
+            *required
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="foot">
+      <button class="button close" (click)="pscloseModal()" >CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+      <button class="button reset" (click)="psresetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+      <button class="button ok" [disabled]="this.Psform.invalid" (click)="PsonSubmit()">{{PsModalType}}<fa-icon [icon]="check"></fa-icon></button>
+    </div>
+  </ng-template>
+
+</p-dialog>
+

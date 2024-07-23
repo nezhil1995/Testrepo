@@ -1,0 +1,84 @@
+<div class="body">
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <div *ngIf="load != true">
+
+    <div class="drop">
+
+      <form [formGroup]="form"  class="form">
+        <div class="form-control">
+          <label for="name">Select</label>
+          <select formControlName="type" (change)="onTypeChange($any($event.target).value)">
+            <option value="">-- Select --</option>
+            <option value="Today">Today</option>
+            <option value="Yesterday">Yesterday</option>
+            <option value="This week">This Week</option>
+            <option value="last 7 days">Last 7 days</option>
+            <option value="This month">This Month</option>
+            <option value="last 30days">Last 30 days</option>
+            <option value="Custom">Custom</option>
+          </select>
+          <div *ngIf="form.get('type')?.invalid && (form.get('type')?.dirty || form.get('type')?.touched)" class="error">
+            <div *ngIf="form.get('type')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+        <!-- <button class="button ok" [disabled]="this.form.invalid" (click)="Onsubmit()">Get Data<fa-icon [icon]="check"></fa-icon></button> -->
+
+        <div class="form-control" *ngIf="this.form.controls['type']?.value==='Custom'">
+          <label for="name">Select</label>
+          <p-calendar 
+            formControlName="daterange" 
+            (onSelect)="onDateRangeSelect()" 
+            dataType="date" 
+            appendTo="body" 
+            dateFormat="dd/mm/yy" 
+            #calendar
+            [maxDate]="maxDate" [readonlyInput]="true" [(ngModel)]="rangeDates"
+            selectionMode="range"
+            placeholder="Select Date Range">
+          </p-calendar>
+        </div>
+
+      </form>
+
+     
+      
+    </div>
+
+
+    <app-loader *ngIf="chartLoad == true && visiblechart" class="divloader"></app-loader>
+
+    <div class="linechart"  *ngIf="chartLoad != true && this.form.valid">
+
+        <div class="title">
+          <h4>Energy Consumed for {{title}}</h4>
+        </div>
+
+        <div class="titledis" *ngIf="!visiblechart">
+          <h4>To fill out the form to show the chart</h4>
+        </div>
+
+        <apx-chart id="chart"
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [stroke]="chartOptions.stroke"
+          [plotOptions]="chartOptions.plotOptions"
+          [dataLabels]="chartOptions.dataLabels"
+          [yaxis]="chartOptions.yaxis"
+          [labels]="chartOptions.labels"
+          [legend]="chartOptions.legend"
+          [title]="chartOptions.title"
+          [colors]="chartOptions.colors"
+          [subtitle]="chartOptions.subtitle"
+          [tooltip]="chartOptions.tooltip"
+          [fill]="chartOptions.fill"
+        ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>

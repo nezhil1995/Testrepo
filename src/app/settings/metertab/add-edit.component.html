@@ -1,0 +1,217 @@
+<body>
+  <app-loader *ngIf="load == true" class="divloader"></app-loader>
+
+  <app-maskloader *ngIf="maskLoad"></app-maskloader>
+
+<div *ngIf="load != true">
+  <div class="table">
+    <div class="tabletop">
+      <div class="add">
+        <button *ngIf="loginType" class="button addBtn" (click)="showDialog()"><fa-icon [icon]="add" [size]="'lg'"></fa-icon></button>
+      </div>
+      <div class="search">
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt2.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+        </span>
+      </div>
+      <div class="delete">
+        <button *ngIf="loginType" class="button delBtn" role="button" [disabled]="!selectedData.length" (click)="deletemeterRows()"><fa-icon [icon]="del" [size]="'lg'"></fa-icon></button>
+      </div>
+    </div>
+
+    <p-table #dt2 id="exporttable" [value]="meterdata" [tableStyle]="{ 'width': '100%' }" styleClass="p-datatable-gridlines"
+    [(selection)]="selectedData"
+    [paginator]="true"
+    [rows]="50"
+    [loading]="loading"
+    [rowsPerPageOptions]="[50,100,500,1000]"
+    [globalFilterFields]="['ammetername','ammetergroup', 'ammetercategory', 'ammetersource', 'ammetermaxthreshold', 'amplantname', 'ammeterthreshold']"
+    class="custom-table"
+    [scrollable]="true" 
+    [scrollHeight]="TableHeight"
+    >
+      <ng-template pTemplate="header">
+          <tr>
+              <th *ngIf="loginType">
+                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="ammetername">METER NAME <p-sortIcon field="metername"></p-sortIcon></th>
+              <th pSortableColumn="ammetergroup">METER GROUP<p-sortIcon field="ammetergroup"></p-sortIcon></th>
+              <th pSortableColumn="ammetercategory">METER CATEGORY <p-sortIcon field="ammetercategory"></p-sortIcon></th>
+              <th pSortableColumn="ammetersource">METER SOURCE <p-sortIcon field="ammetersource"></p-sortIcon></th>
+              <th pSortableColumn="ammeterthreshold">MAX THRESHOLD<p-sortIcon field="ammeterthreshold"></p-sortIcon></th>
+              <!-- <th pSortableColumn="ammeterminthreshold">MIN THRESHOLD<p-sortIcon field="ammeterminthreshold"></p-sortIcon></th> -->
+              <th pSortableColumn="amplantname">PLANT NAME <p-sortIcon field="amplantname"></p-sortIcon></th>
+              <th *ngIf="loginType">EDIT</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-Data>
+          <tr>
+              <td *ngIf="loginType">
+                <p-tableCheckbox [value]="Data"></p-tableCheckbox>
+              </td>
+              <td>{{ Data.ammetername }}</td>
+              <td>{{ Data.ammetergroup?.groupname || Data.ammetergroup }}</td>
+              <td>{{ Data.ammetercategory?.name || Data.ammetercategory }}</td>
+              <td>{{ Data.ammetersource }}</td>
+              <td>{{ Data.ammeterthreshold | number:'1.1-2' || '-' }}</td>
+              <!-- <td>{{ Data.ammeterminthreshold | number:'1.1-2' || '-' }}</td> -->
+              <td>{{ Data.amplantname?.name || Data.amplantname }}</td>
+              <td *ngIf="loginType"><button class="edtBtn" role="button" (click)="EditModal(Data)"><fa-icon [icon]="edit"></fa-icon></button></td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-Data>
+        <tr>
+          <td class="footd" colspan="8">No Data Available</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="paginatorright">
+        <button class="Btn" (click)="exportExcel()">
+          <div class="sign"><i class="fi fi-sr-file-excel"></i></div>
+          <div class="text">EXPORT</div>
+        </button>        
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+</body>
+
+
+<p-dialog [(visible)]="DisplayModal" [closable]="false" [draggable]="false" [style]="{ width: 'auto',}" [modal]="true">
+
+    <div class="formdiv">
+      <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">
+
+        <div class="form-control">
+          <label for="name">Metername</label>
+          <input type="text" formControlName="ammetername" placeholder="Enter" required [readonly]="ModalType == 'UPDATE'" [class.notallow]="ModalType == 'UPDATE'">
+          <div *ngIf="form.get('ammetername')?.invalid && (form.get('ammetername')?.dirty || form.get('ammetername')?.touched)" class="error" >
+            <div *ngIf="form.get('ammetername')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Metercode</label>
+          <input type="text" formControlName="ammetercode" placeholder="Enter" [(ngModel)]="defaultValue" [readOnly]="true" required>
+          <div *ngIf="form.get('ammetercode')?.invalid && (form.get('ammetercode')?.dirty || form.get('ammetercode')?.touched)" class="error">
+            <div *ngIf="form.get('ammetercode')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="meter">MeterGroup</label>
+          <select formControlName="ammetergroup">
+            <option value="">-- Select Groupname --</option>
+            <option *ngFor="let meter of Metergroupname" [value]="meter.groupname">
+              {{ meter.groupname }}
+            </option>
+          </select>
+          <div *ngIf="form.get('ammetergroup')?.invalid && (form.get('ammetergroup')?.dirty || form.get('ammetergroup')?.touched)" class="error">
+            <div *ngIf="form.get('ammetergroup')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Metercategory</label>
+          <select formControlName="ammetercategory">
+            <option value="">-- Select Category --</option>
+            <option *ngFor="let meter of meterCat" [value]="meter.name">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('ammetercategory')?.invalid && (form.get('ammetercategory')?.dirty || form.get('ammetercategory')?.touched)" class="error">
+            <div *ngIf="form.get('ammetercategory')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <form [formGroup]="form" class="form">
+
+        <div class="form-control">
+          <label for="name">Meter Source</label>
+          <select formControlName="ammetersource">
+            <option value="">-- Select Category --</option>
+            <option *ngFor="let meter of metersrc" [value]="meter.name">
+              {{ meter.name }}
+            </option>
+          </select>
+          <div *ngIf="form.get('ammetersource')?.invalid && (form.get('ammetersource')?.dirty || form.get('ammetersource')?.touched)" class="error">
+            <div *ngIf="form.get('ammetersource')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Plantname</label>
+            <select formControlName="amplantname">
+              <option value="">-- Select Plant --</option>
+              <option *ngFor="let meter of plants" [value]="meter.name">
+                {{ meter.name }}
+              </option>
+            </select>
+            <div *ngIf="form.get('amplantname')?.invalid && (form.get('amplantname')?.dirty || form.get('amplantname')?.touched)" class="error">
+              <div *ngIf="form.get('amplantname')?.errors!required">
+                *required
+              </div>
+            </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Meter Location</label>
+          <input type="text" formControlName="ammeterlocation" placeholder="Enter" required>
+          <div *ngIf="form.get('ammeterlocation')?.invalid && (form.get('ammeterlocation')?.dirty || form.get('ammeterlocation')?.touched)" class="error">
+            <div *ngIf="form.get('ammeterlocation')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="name">Meter Max Threshold (kWh)</label>
+          <input type="number" formControlName="ammeterthreshold" placeholder="Enter" required>
+          <div *ngIf="form.get('ammeterthreshold')?.invalid && (form.get('ammeterthreshold')?.dirty || form.get('ammeterthreshold')?.touched)" class="error">
+            <div *ngIf="form.get('ammeterthreshold')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="form-control">
+          <label for="name">Meter Min Threshold (kWh)</label>
+          <input type="number" formControlName="ammeterminthreshold" placeholder="Enter" required>
+          <div *ngIf="form.get('ammeterminthreshold')?.invalid && (form.get('ammeterminthreshold')?.dirty || form.get('ammeterminthreshold')?.touched)" class="error">
+            <div *ngIf="form.get('ammeterminthreshold')?.errors!required">
+              *required
+            </div>
+          </div>
+        </div> -->
+
+      </form>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="foot">
+        <button class="button close" (click)="closeModal()">CLOSE<fa-icon [icon]="cross"></fa-icon></button>
+        <button class="button reset" (click)="resetFrom()">RESET<fa-icon [icon]="reset"></fa-icon></button>
+        <button class="button ok" [disabled]="form.invalid" (click)="onSubmit()">{{ModalType}}<fa-icon [icon]="check"></fa-icon></button>
+      </div>
+    </ng-template>
+
+</p-dialog>
+
+
+
+
+

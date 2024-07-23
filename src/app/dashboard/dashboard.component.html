@@ -1,0 +1,779 @@
+
+<body>
+
+  <app-loader *ngIf="load == true && !this.chartData"></app-loader>
+
+  <app-try-again (ClicktryAgain)="TryAgain()" [Message]="message" *ngIf="ShowTry == true"></app-try-again>
+
+<div *ngIf="load != true && !ShowTry">
+
+  <!-- cards start hear -->
+  <div class="cards_container">
+
+    <div class="container5">
+  
+      <div class="overEnergyviewcard">
+        <div class="main">
+          <fa-icon [icon]="eng" [animation]="'shake'"></fa-icon>
+          <h3>Energy Consumption</h3>
+        </div>
+        <div class="value">
+          <h4 style="font-size: 13.8px;">Today(Import)&nbsp;:</h4>
+          <tm-ng-odometer class="small" style="font-size: 13.8px; color: #0D0CB5;" [number]="this.EnergyToday" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">kWh</p>
+        </div>
+        <div class="value">
+          <h4 style="font-size: 13.8px;">Today(Export)&nbsp;:</h4>
+          <tm-ng-odometer class="small" style="font-size: 13.8px; color: #0D0CB5;" [number]="this.NetExportEng" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">kWh</p>
+        </div>
+        <div class="value">
+          <h4 style="font-size: 13.8px;">Yesterday&nbsp;:</h4>
+          <tm-ng-odometer class="small" style="font-size: 13.8px; color: #0D0CB5;" [number]="this.EnergyYesterday" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">kWh</p>
+        </div>
+        <div class="value">
+          <h4 style="font-size: 13.8px;">This Week&nbsp;:</h4>
+          <tm-ng-odometer class="small" style="font-size: 13.8px; color: #0D0CB5;" [number]="this.EnergyThisWeek" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">kWh</p>
+        </div>
+        <div class="value">
+          <h4 style="font-size: 13.8px;">This Month&nbsp;:</h4>
+          <tm-ng-odometer class="small" style="font-size: 13.8px; color: #0D0CB5;" [number]="this.EnergyThisMonth" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">kWh</p>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="container7">
+      
+      <!-- POWER FACTOR -->
+      <div class="overviewcard"  [ngClass]="{'blink-red': isPowerFacLessThanOne()}">
+        <div class="main">
+          <fa-icon [icon]="bulb" [animation]="'bounce'"></fa-icon>
+          <h3>Power Factor</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.PowerFac" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="value">
+          <!-- <fa-icon id="maxA" [icon]="maxA"></fa-icon>  -->
+          <h4 id="maxA">MAX&nbsp;:</h4>
+          <tm-ng-odometer class="small" [number]="this.PowerFactorMax" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">cosϕ</p>
+        </div>
+        <div class="value">
+          <!-- <fa-icon id="minA" [icon]="minA"></fa-icon> -->
+          <h4 id="minA">MIN&nbsp;:</h4>
+          <tm-ng-odometer class="small" [number]="this.PowerFactorMin" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">cosϕ</p>
+        </div>
+      </div>
+  
+      <!-- DEMANDS -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="arrow" [animation]="'fade'" ></fa-icon>
+          <h3>KVA</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.Demands" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="value">
+          <!-- <fa-icon id="maxA" [icon]="maxA"></fa-icon> -->
+          <h4 id="maxA">MAX&nbsp;:</h4>
+          <tm-ng-odometer class="small" [number]="this.MaxDemand" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>
+          <!-- <p class="unit">KVA</p> -->
+        </div>
+        <div class="value">
+          <!-- <fa-icon id="minA" [icon]="minA"></fa-icon> -->
+          <h4 id="minA">MIN&nbsp;:</h4>
+          <tm-ng-odometer class="small" [number]="this.MinDemand" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>
+          <!-- <p class="unit">KVA</p> -->
+        </div>
+      </div>
+  
+      <!-- VOLTAGE -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="vol" [animation]="'flip'" ></fa-icon>
+          <h3>Voltage</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.Voltage" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>V<sub>1</sub>&nbsp;:&nbsp;{{this.Voltage1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <div class="small">  </div> -->
+            <p class="unit">V</p>
+          </div>
+          <div class="value_cos">
+            <h4>V<sub>2</sub>&nbsp;:&nbsp;{{this.Voltage2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.Voltage2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">V</p>
+          </div>
+          <div class="value_cos">
+            <h4>V<sub>3</sub>&nbsp;:&nbsp;{{this.Voltage3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.Voltage3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">V</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- CURRENT -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="curr" [animation]="'bounce'" ></fa-icon>
+          <h3>Current</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.Current" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>C<sub>1</sub>&nbsp;:&nbsp;{{this.Current1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.Current1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">A</p>
+          </div>
+          <div class="value_cos">
+            <h4>C<sub>2</sub>&nbsp;:&nbsp;{{this.Current2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.Current2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">A</p>
+          </div>
+          <div class="value_cos">
+            <h4>C<sub>3</sub>&nbsp;:&nbsp;{{this.Current3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.Current3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">A</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- FRQUENCY -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="tow" [animation]="'flip'" ></fa-icon>
+          <h3>Frequency</h3>
+        </div>
+        <div class="value" style="height: 13vh;">
+          <tm-ng-odometer class="small" style="font-size: 15px;" [number]="this.Frequency" [theme]="'minima'" [config]="{ format: '(,ddd).dd' }"></tm-ng-odometer>
+          <p class="unit">Hz</p>
+        </div>
+      </div>
+      
+      <!-- REAL POWER -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="Rpow" [animation]="'shake'" ></fa-icon>
+          <h3>Real Power</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.RealPow" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>P<sub>1</sub>&nbsp;:&nbsp;{{this.RealPower1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.RealPower1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">kW</p>
+          </div>
+          <div class="value_cos">
+            <h4>P<sub>2</sub>&nbsp;:&nbsp;{{this.RealPower2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.RealPower2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">kW</p>
+          </div>
+          <div class="value_cos">
+            <h4>P<sub>3</sub>&nbsp;:&nbsp;{{this.RealPower3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.RealPower3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">kW</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- APPRANT POWER -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="Apow" [animation]="'flip'" ></fa-icon>
+          <h3>Apparent Power</h3>
+          <!-- <p>(<tm-ng-odometer class="small" [number]="this.AppPow" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p> -->
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>AP<sub>1</sub>&nbsp;:&nbsp;{{this.ApprantPow1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ApprantPow1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVA</p>
+          </div>
+          <div class="value_cos">
+            <h4>AP<sub>2</sub>&nbsp;:&nbsp;{{this.ApprantPow2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ApprantPow2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVA</p>
+          </div>
+          <div class="value_cos">
+            <h4>AP<sub>3</sub>&nbsp;:&nbsp;{{this.ApprantPow3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ApprantPow3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVA</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- REACTIVE POWER -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="RecPow" [animation]="'beat'" ></fa-icon>
+          <h3>Reactive Power</h3>
+          <p>(<tm-ng-odometer class="small" [number]="this.ReactPow" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer>)</p>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>RP<sub>1</sub>&nbsp;:&nbsp;{{this.ReactivePow1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ReactivePow1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVAR</p>
+          </div>
+          <div class="value_cos">
+            <h4>RP<sub>2</sub>&nbsp;:&nbsp;{{this.ReactivePow2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ReactivePow2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVAR</p>
+          </div>
+          <div class="value_cos">
+            <h4>RP<sub>3</sub>&nbsp;:&nbsp;{{this.ReactivePow3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.ReactivePow3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">KVAR</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- VOLTAGE HARMONICS -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="Vhar" [animation]="'shake'" ></fa-icon>
+          <h3>Voltage Harmonics</h3>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>THV<sub>1</sub>&nbsp;:&nbsp;{{this.VolHarV1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.VolHarV1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+          <div class="value_cos">
+            <h4>THV<sub>2</sub>&nbsp;:&nbsp;{{this.VolHarV2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.VolHarV2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+          <div class="value_cos">
+            <h4>THV<sub>3</sub>&nbsp;:&nbsp;{{this.VolHarV3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.VolHarV3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- CURRENT HARMONICS -->
+      <div class="overviewcard">
+        <div class="main">
+          <fa-icon [icon]="Vhar" [animation]="'beat'" ></fa-icon>
+          <h3>Current Harmonics</h3>
+        </div>
+        <div class="harmonics">
+          <div class="value_cos">
+            <h4>THC<sub>1</sub>&nbsp;:&nbsp;{{this.CurHarC1.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.CurHarC1" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+          <div class="value_cos">
+            <h4>THC<sub>2</sub>&nbsp;:&nbsp;{{this.CurHarC2.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.CurHarC2" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+          <div class="value_cos">
+            <h4>THC<sub>3</sub>&nbsp;:&nbsp;{{this.CurHarC3.toFixed(1).toLocaleString()}}</h4>
+            <!-- <tm-ng-odometer class="small" [number]="this.CurHarC3" [theme]="'minima'" [config]="{ format: '(,ddd).d' }"></tm-ng-odometer> -->
+            <p class="unit">%</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  
+  </div>
+  <!-- cards end hear -->
+
+  <!-- charts start hear -->
+
+  <div class="container">
+
+    <div class="chart1 chartscr">
+      <div class="title">
+        <h4>Groupwise Energy Consumption</h4>
+      </div>
+
+      <div class="titlered" *ngIf="this.chartData.groupname.length==0">
+        <h4>Incomer Data Invalid</h4>
+      </div>
+
+      <highcharts-chart *ngIf="this.chartData.groupname.length!=0"
+        id="chart"
+        [Highcharts]="Highcharts"
+        constructorType="chart"
+        [options]="GroupChartOptions"
+      ></highcharts-chart>
+
+    </div>
+
+    <div class="chart2 new chartscr">
+      <div class="title">
+        <h4>Energy Consumption by Meter</h4>
+      </div>
+
+      <div class="titlered" *ngIf="this.chartData.groupname.length==0">
+        <h4>Incomer Data Invalid</h4>
+      </div>
+
+      <highcharts-chart *ngIf="this.chartData.groupname.length!=0"
+        id="chart"
+        [Highcharts]="Highcharts"
+        constructorType="chart"
+        [options]="MeterChartOptions"
+      ></highcharts-chart>
+
+    </div>
+
+  </div>
+
+  <!-- SOURCE SHIFT TABLE -->
+
+  <div class="container2">
+
+    <div class="piechart">
+      <div class="title">
+        <h4>Sourcewise Shift-Splitups</h4>
+        <form class="form" [formGroup]="shiftForm">
+          <div class="control">
+            <select formControlName="selectedday" (change)="ShiftInputChanges(($any($event.target).value))">
+              <option value="">-- Select --</option>
+              <option *ngFor="let select of shiftwiseOpt" [value]="select.value">
+                {{ select.name }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      
+      <table class="srctable">
+        <tr>
+          <td id="tableimg" rowspan="4"><img src="../../assets/transformer.gif" width="80px" height="70px"> <p>Transformer</p></td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 1:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexTrans][0] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 2:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexTrans][1] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 3:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexTrans][2] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+
+        <div class="tabledivider"></div>
+
+        <tr>
+          <td rowspan="4"><img src="../../assets/solar-energy.gif" width="57px"> <p>Solar</p></td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 1:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexSolar][0] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 2:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexSolar][1] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 3:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexSolar][2] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+
+        <div class="tabledivider"></div>
+
+        <tr>
+          <td rowspan="4"><img src="../../assets/generator.gif" width="65px"> <p>DG</p></td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 1:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexDG][0] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 2:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexDG][1] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;">Shift 3:</td>
+          <td style="text-align: right; font-weight: 600;">{{this.ShiftInputChangeData[srcIndexDG][2] || '--'}}</td>
+          <td style="text-align: left; font-weight: 600;">kWh</td>
+        </tr>
+      </table>
+
+    </div>
+
+    <!-- GROUP SHIFT CHART -->
+
+    <div class="chart1 grpshift">
+      <div class="title">
+        <h4>Groupwise Energy Consumption Shift-Splitups (kWh)</h4>
+      </div>
+
+      <div class="titlered" *ngIf="this.chartData.groupname.length==0">
+        <h4>Incomer Data Invalid</h4>
+      </div>
+
+      <highcharts-chart *ngIf="this.chartData.groupname.length!=0"
+        id="chart"
+        [Highcharts]="Highcharts"
+        constructorType="chart"
+        [options]="GrpShiftChartOptions"
+      ></highcharts-chart>
+    
+    </div>
+
+  </div>
+
+  <!-- DYNAMIC POWER CHART -->
+
+  <div class="container2">
+
+    <div class="chart1 pfdiv">
+
+       <div class="costsummary">
+        <form [formGroup]="DynamicPowForm">
+
+          <div class="Dyncontrol">
+            <label>Select Date</label>
+            <p-calendar appendTo="body" [(ngModel)]="DynamicDefaultDate" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetDynamicPowData($event)"
+              >
+            </p-calendar>
+          </div>
+
+          <div class="Dyncontrol" *ngIf="!dynLoadVis">
+            <label>Select</label>
+            <p-multiSelect [options]="DynamicChartDropdown" [(ngModel)]="selectedDetails" (onChange)="OnDynSelect($event)" (onRemove)="onDynRemove($event)"
+            formControlName="chartname" 
+            optionLabel="name" 
+            optionValue="value" 
+            optionDisabled="disable"
+            [selectionLimit]='3'
+            [filter]="false">
+          </p-multiSelect>
+          </div>
+
+          <button *ngIf="!dynLoadVis" class="button1" type="button" [disabled]="!(DynamicLoad === true && this.DynamicPowForm.valid)" (click)="onClickDynmic()">GET DATA</button>
+        </form>
+
+      </div>
+
+      <app-loader *ngIf="DynamicLoad === true && this.DynamicPowForm.valid && dynLoadVis" class="Costdivloader"></app-loader>
+
+      <app-try-again (ClicktryAgain)="dyTryAgain()" [Message]="message" *ngIf="dyShowTry == true" class="Costdivloader"></app-try-again>
+
+      <!-- <div class="titlered" *ngIf="this.chartData.groupname.length==0">
+        <h4>Oops ! , Incomer HT Meter data cannot be fetched.</h4>
+      </div> -->
+
+      <highcharts-chart 
+      *ngIf="this.DynamicLoad !== true && this.DynamicPowForm.valid && !dyShowTry"
+      [Highcharts]="Highcharts"
+      constructorType="chart"
+      [options]="DynamicChartOptions"
+      id="chart"
+      ></highcharts-chart>
+
+      <!-- <app-under-maintenance></app-under-maintenance> -->
+
+    </div>
+
+  </div>
+
+
+  <!-- FLOW CHART -->
+
+  <div class="container2">
+
+    <div class="chart1 orgchart">
+
+      <div class="titleorg">
+        <form [formGroup]="FlowChartForm">
+          <h5>SELECT MONTH</h5>
+          <div class="control">
+            <p-calendar appendTo="body" [(ngModel)]="flowDefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="updateorgDataArray($event)"
+              >
+            </p-calendar>
+          </div>
+        </form>
+        <h4 *ngIf="flowload != true && this.FlowChartForm.valid">Energy Chart for Month {{MonthName}}</h4>
+      </div>
+
+      <app-loader *ngIf="flowload === true && this.FlowChartForm.valid" class="Costdivloader"></app-loader>
+
+      <div class="org" *ngIf="flowload != true && this.FlowChartForm.valid">
+
+        <p-organizationChart [value]="data" selectionMode="multiple" [(selection)]="selectedNodes">
+          <ng-template let-node pTemplate="person">
+            <div class="head">{{ node.data.name }}</div>
+            <div class="sub"><fa-icon [icon]="bat"></fa-icon>{{ node.data.title1 }}</div>
+            <div class="sub">{{this.CurrencyType}} {{ node.data.title2 }}</div>
+          </ng-template>
+        </p-organizationChart>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Cost Container -->
+
+  <div class="costing-container">
+
+    <div class="percentage-container">
+
+      <div class="costsummary1">
+
+        <form [formGroup]="formPerTypeCost" class="form">
+
+          <div class="control">
+            <label>Select Type</label>
+            <select formControlName="selectedType" [(ngModel)]="DefaultPercentageSelector">
+              <option value="">-- Select --</option>
+              <option *ngFor="let select of Perseleter" [value]="select">
+                {{ select }}
+              </option>
+            </select>
+          </div>
+
+          <div class="control" *ngIf="this.formPerTypeCost.get('selectedType')?.value === 'Month Basis'">
+            <label>Select Month</label>
+            <p-calendar appendTo="body" [(ngModel)]="CostPerDefaultDate" formControlName="month" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetPercentageCostData('month',$event)"
+              >
+            </p-calendar>
+          </div>
+
+          <div class="control" *ngIf="this.formPerTypeCost.get('selectedType')?.value === 'Year Basis'">
+            <label>Select Year</label>
+            <p-calendar appendTo="body" [(ngModel)]="CostPerDefaultDate" formControlName="year" view="year" dateFormat="yy" [readonlyInput]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [maxDate]="maxDate"
+            (onSelect)="GetPercentageCostData('year',$event)"
+            >
+            </p-calendar>
+          </div>
+
+          <div class="control" *ngIf="this.formPerTypeCost.get('selectedType')?.value === 'Date Basis'">
+            <label>Select Date</label>
+            <p-calendar appendTo="body" [(ngModel)]="CostPerDefaultDate" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [maxDate]="maxDate"
+            (onSelect)="GetPercentageCostData('date',$event)"
+            >
+            </p-calendar>
+          </div>
+
+        </form>
+        
+      </div>
+
+      <app-loader *ngIf="perCostload==true" class="costdivloaderper"></app-loader>
+
+      <highcharts-chart 
+        id="percentchart" *ngIf="perCostload!=true && this.formPerTypeCost.valid"
+        [Highcharts]="Highcharts"
+        constructorType="chart"
+        [options]="percentageChartOptions"
+      ></highcharts-chart>
+
+    </div>
+
+    <!-- HOURWISE AND MONTH COST DATA -->
+    <div class="container3">
+
+      <div class="topbtn">
+        <form [formGroup]="SwitchForm" title="View">
+          <p-selectButton [options]="stateOptionsEms" formControlName="value" [(ngModel)]="value" optionLabel="label" optionValue="value">
+            <ng-template let-item>
+              <div class="btnLable">
+                <i [class]="item.icon"></i>
+                <p>{{ item.label }}</p>
+              </div>
+            </ng-template>
+          </p-selectButton>
+        </form>
+      </div>
+
+      <div class="normalChart chartscr" *ngIf="SwitchForm.get('value')?.value === 'month'">
+
+        <div class="costsummary1">
+
+          <form [formGroup]="formTypeCost">
+            <div class="control">
+              <select formControlName="selectedType" [(ngModel)]="defafulselecter">
+                <option value="">-- Select --</option>
+                <option *ngFor="let select of seleter" [value]="select">
+                  {{ select }}
+                </option>
+              </select>
+            </div>
+          </form>
+
+          <form [formGroup]="formMonthCost" *ngIf="this.formTypeCost.get('selectedType')?.value === 'Month Basis' && this.formTypeCost.valid">
+            <h5>SELECT MONTH</h5>
+            <div class="control">
+              <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+                [monthNavigator]="true"
+                [yearNavigator]="true"
+                [maxDate]="maxDate"
+                (onSelect)="GetMonthCostData($event)"
+                >
+              </p-calendar>
+            </div>
+          </form>
+
+          <form [formGroup]="formYearCost" *ngIf="this.formTypeCost.get('selectedType')?.value === 'Year Basis' && this.formTypeCost.valid">
+            <h5>SELECT YEAR</h5>
+            <div class="control">
+              <p-calendar appendTo="body" formControlName="selectYear" view="year" dateFormat="yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetYearCostData($event)"
+              >
+              </p-calendar>
+            </div>
+          </form>
+        </div>
+
+        <app-loader *ngIf="costLoad === true && this.formTypeCost.valid && !this.Costchartvisible" class="Costdivloader"></app-loader>
+
+        <apx-chart id="chart" *ngIf="costLoad !== true && this.formTypeCost.valid && this.costEnergyData && this.Costchartvisible"
+          [series]="CostMixedChart.series"
+          [chart]="CostMixedChart.chart"
+          [xaxis]="CostMixedChart.xaxis"
+          [stroke]="CostMixedChart.stroke"
+          [dataLabels]="CostMixedChart.dataLabels"
+          [yaxis]="CostMixedChart.yaxis"
+          [labels]="CostMixedChart.labels"
+          [legend]="CostMixedChart.legend"
+          [title]="CostMixedChart.title"
+          [subtitle]="CostMixedChart.subtitle"
+          [plotOptions]="CostMixedChart.plotOptions"
+          [fill]="CostMixedChart.fill"
+          [tooltip]="CostMixedChart.tooltip"
+        ></apx-chart>
+
+      </div>
+
+       <!-- COE PERCENTAGE CONTAINER -->
+
+      <div class="normalChart chartscr" *ngIf="SwitchForm.get('value')?.value === 'live'">
+        
+        <div class="Coecostsummary">
+          <form [formGroup]="coePerForm">
+            <div class="Dyncontrol">
+              <label>Select Date</label>
+              <p-calendar appendTo="body" [(ngModel)]="CoeperDefaultDate" formControlName="date" view="date" dateFormat="dd/mm/yy" [readonlyInput]="true"
+                [monthNavigator]="true"
+                [yearNavigator]="true"
+                [maxDate]="maxDate"
+                (onSelect)="GetCoePerData($event)"
+                >
+              </p-calendar>
+            </div>
+            <div class="Dyncontrol" *ngIf="this.dropDownvis">
+              <label>Select</label>
+              <p-multiSelect [options]="CompareOptions" [(ngModel)]="COEselectedDetails" (onChange)="OnCoeSrcSelect($event,'Onclick')"
+              formControlName="chartname" 
+              optionLabel="name" 
+              optionValue="name"
+              [selectionLimit]='5'
+              [filter]="false">
+              </p-multiSelect>
+            </div>
+          </form>
+        </div>
+  
+        <app-loader *ngIf="CoeCostPerLoad == true" class="Costdivloader"></app-loader>
+  
+        <apx-chart id="chart" *ngIf="CoeCostPerLoad != true && this.coePerForm.valid"
+          [series]="COEChart.series"
+          [chart]="COEChart.chart"
+          [xaxis]="COEChart.xaxis"
+          [stroke]="COEChart.stroke"
+          [dataLabels]="COEChart.dataLabels"
+          [yaxis]="COEChart.yaxis"
+          [labels]="COEChart.labels"
+          [legend]="COEChart.legend"
+          [title]="COEChart.title"
+          [subtitle]="COEChart.subtitle"
+          [tooltip]="COEChart.tooltip"
+        ></apx-chart>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SEC CHART -->
+
+  <div class="container2">
+
+    <div class="chart1 SECCosdiv">
+
+      <div class="Coecostsummary">
+        <form [formGroup]="SECform">
+          <div class="control">
+            <label>Select Month</label>
+            <p-calendar appendTo="body" [(ngModel)]="DefaultDate" formControlName="selectMonth" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [maxDate]="maxDate"
+              (onSelect)="GetMonthSECtData($event)"
+              >
+            </p-calendar>
+          </div>
+        </form>
+
+        <!-- <h4 class="basetitle" *ngIf="secload != true && this.SECform.valid && this.SECData">SEC DATA FOR MONTH {{this.FormTypeSEC}}</h4> -->
+      </div>
+
+      <app-loader *ngIf="secload === true && this.SECform.valid" class="Costdivloader"></app-loader>
+
+      <apx-chart id="chart" *ngIf="secload != true && this.SECform.valid && this.SECData"
+        [series]="SECChart.series"
+        [chart]="SECChart.chart"
+        [xaxis]="SECChart.xaxis"
+        [stroke]="SECChart.stroke"
+        [dataLabels]="SECChart.dataLabels"
+        [yaxis]="SECChart.yaxis"
+        [labels]="SECChart.labels"
+        [legend]="SECChart.legend"
+        [title]="SECChart.title"
+        [subtitle]="SECChart.subtitle"
+        [tooltip]="SECChart.tooltip"
+        [annotations]="SECChart.annotations"
+      ></apx-chart>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>

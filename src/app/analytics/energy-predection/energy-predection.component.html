@@ -1,0 +1,12 @@
+
+
+<app-loader *ngIf="load==true"></app-loader>
+
+<div class="linechart" *ngIf="load!==true">
+  <highcharts-chart 
+    [Highcharts]="Highcharts"
+    constructorType="chart"
+    [options]="ChartOptions"
+    id="chart"
+  ></highcharts-chart>
+</div>
